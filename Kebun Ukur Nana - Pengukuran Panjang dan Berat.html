@@ -1,0 +1,1281 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kebun Ukur Nana — Pengukuran Panjang & Berat</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Nunito:ital,wght@0,400;0,600;0,700;0,800;1,700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css">
+<style>
+:root{
+  --bg1:#F3EEFF;
+  --bg2:#E9F8F1;
+  --paper:#FFFFFF;
+  --ink:#3D3352;
+  --plum:#4A3B5C;
+  --lavender:#8C6FC7;
+  --lavender-deep:#6E4FA8;
+  --lavender-light:#E4D9F9;
+  --mint:#3FB88C;
+  --mint-light:#CDF1E3;
+  --sky:#4AA3E0;
+  --sky-light:#D2ECFB;
+  --coral:#FF7A5C;
+  --coral-light:#FFDCD2;
+  --sun:#FFC94A;
+  --sun-light:#FFEFC7;
+  --shadow: 0 18px 40px -12px rgba(74,59,92,0.28);
+  --radius-lg: 28px;
+  --radius-md: 18px;
+  --radius-sm: 12px;
+}
+*{box-sizing:border-box;}
+html,body{margin:0;padding:0;}
+body{
+  min-height:100vh;
+  font-family:'Nunito',sans-serif;
+  color:var(--ink);
+  background:
+    radial-gradient(circle at 12% 8%, #fff 0%, transparent 40%),
+    radial-gradient(circle at 90% 15%, var(--sky-light) 0%, transparent 45%),
+    radial-gradient(circle at 85% 90%, var(--mint-light) 0%, transparent 45%),
+    linear-gradient(160deg, var(--bg1) 0%, var(--bg2) 100%);
+  background-attachment:fixed;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  padding:18px 14px 34px;
+  overflow-x:hidden;
+}
+h1,h2,h3,.display{font-family:'Fredoka',sans-serif;}
+h2{font-size:1.7rem;color:var(--lavender-deep);margin:0 0 6px;}
+h3{font-size:1.15rem;color:var(--plum);margin:0 0 6px;}
+p{line-height:1.6;font-size:1.02rem;}
+button{font-family:'Nunito',sans-serif;cursor:pointer;}
+
+/* ---------- Top: tape progress ---------- */
+.tape-wrap{
+  width:100%;
+  max-width:900px;
+  margin-bottom:14px;
+}
+.tape-title{
+  display:flex;align-items:center;justify-content:space-between;
+  margin-bottom:6px;
+  padding:0 4px;
+}
+.brand{
+  font-family:'Fredoka',sans-serif;
+  font-weight:600;
+  color:var(--lavender-deep);
+  font-size:1rem;
+  display:flex;align-items:center;gap:8px;
+}
+.brand svg{height:26px;width:auto;}
+.page-count{
+  font-weight:800;color:var(--plum);
+  background:var(--paper);
+  border-radius:20px;
+  padding:4px 12px;
+  font-size:0.85rem;
+  box-shadow:0 4px 10px rgba(74,59,92,0.12);
+}
+.tape{
+  position:relative;
+  height:42px;
+  background:linear-gradient(180deg,#FFFDF3 0%, #FFF6D8 100%);
+  border-radius:999px;
+  box-shadow:inset 0 2px 4px rgba(0,0,0,0.08), 0 6px 14px rgba(74,59,92,0.15);
+  overflow:visible;
+  border:2px solid #F2DFA0;
+}
+.tape-fill{
+  position:absolute;left:0;top:0;bottom:0;
+  border-radius:999px;
+  background:linear-gradient(90deg, var(--mint) 0%, var(--sky) 100%);
+  opacity:0.35;
+  transition:width .5s cubic-bezier(.4,1.4,.6,1);
+}
+.tape-ticks{
+  position:absolute;inset:0;
+  display:flex;align-items:stretch;
+}
+.tick{
+  flex:1;
+  position:relative;
+  border-right:1px solid rgba(74,59,92,0.15);
+  display:flex;align-items:flex-end;justify-content:center;
+  cursor:pointer;
+}
+.tick:last-child{border-right:none;}
+.tick span{
+  font-size:0.55rem;font-weight:800;color:var(--plum);
+  opacity:0.55;
+  margin-bottom:3px;
+  pointer-events:none;
+}
+.tick.done span{opacity:0.85;color:var(--mint);}
+.tick.current span{opacity:1;color:var(--coral);}
+.tape-marker{
+  position:absolute;top:-22px;
+  width:34px;height:34px;
+  transform:translateX(-50%);
+  transition:left .5s cubic-bezier(.4,1.4,.6,1);
+  filter:drop-shadow(0 4px 6px rgba(74,59,92,0.35));
+}
+
+/* ---------- Book ---------- */
+.book-stage{
+  width:100%;
+  max-width:900px;
+  perspective:1600px;
+}
+.book{
+  position:relative;
+  width:100%;
+  min-height:560px;
+  background:var(--paper);
+  border-radius:var(--radius-lg);
+  box-shadow:var(--shadow);
+  padding:34px 38px 30px;
+  overflow:hidden;
+  animation:pageIn .45s ease;
+}
+@keyframes pageIn{
+  from{opacity:0;transform:translateY(14px) scale(.99);}
+  to{opacity:1;transform:translateY(0) scale(1);}
+}
+.book::before{
+  content:'';
+  position:absolute;top:0;left:0;right:0;height:10px;
+  background:linear-gradient(90deg,var(--lavender),var(--sky),var(--mint),var(--sun),var(--coral));
+  opacity:0.85;
+}
+.eyebrow{
+  display:inline-flex;align-items:center;gap:6px;
+  font-family:'Fredoka',sans-serif;
+  font-weight:600;
+  font-size:0.72rem;
+  letter-spacing:0.08em;
+  color:var(--paper);
+  padding:5px 14px;
+  border-radius:999px;
+  margin-bottom:12px;
+}
+.eb-tujuan{background:var(--lavender);}
+.eb-pemanasan{background:var(--sun);color:var(--plum);}
+.eb-koneksi{background:var(--sky);}
+.eb-materi{background:var(--mint);}
+.eb-contoh{background:var(--coral);}
+.eb-latihan{background:var(--lavender-deep);}
+.eb-refleksi{background:var(--sky);}
+.eb-penutup{background:linear-gradient(90deg,var(--coral),var(--sun));color:var(--plum);}
+
+.content-grid{
+  display:flex;gap:28px;align-items:flex-start;
+  flex-wrap:wrap;
+}
+.col-text{flex:1 1 320px;min-width:260px;}
+.col-illust{flex:1 1 260px;min-width:220px;display:flex;justify-content:center;align-items:center;}
+
+/* speech bubble */
+.speech{
+  position:relative;
+  background:var(--lavender-light);
+  border-radius:18px;
+  padding:12px 16px;
+  font-weight:700;
+  color:var(--lavender-deep);
+  font-size:0.95rem;
+  margin:10px 0;
+  display:inline-block;
+}
+.speech::after{
+  content:'';
+  position:absolute;left:22px;bottom:-9px;
+  width:18px;height:18px;
+  background:var(--lavender-light);
+  clip-path:polygon(0 0,100% 0,0 100%);
+}
+.nana-row{display:flex;gap:12px;align-items:flex-end;margin-bottom:10px;flex-wrap:wrap;}
+
+/* cards / chips */
+.card-list{list-style:none;margin:10px 0;padding:0;display:flex;flex-direction:column;gap:10px;}
+.card-list li{
+  display:flex;gap:10px;align-items:flex-start;
+  background:var(--mint-light);
+  border-radius:var(--radius-sm);
+  padding:10px 14px;
+  font-weight:700;color:var(--plum);
+}
+.card-list li .ico{flex-shrink:0;font-size:1.3rem;}
+.chip{
+  display:inline-flex;align-items:center;gap:6px;
+  background:var(--sky-light);
+  color:var(--plum);
+  font-weight:800;
+  padding:6px 14px;
+  border-radius:999px;
+  font-size:0.95rem;
+  margin:4px 6px 4px 0;
+}
+.formula-card{
+  background:linear-gradient(135deg,var(--sun-light),var(--coral-light));
+  border-radius:var(--radius-md);
+  padding:18px 22px;
+  margin:14px 0;
+  text-align:center;
+  box-shadow:0 8px 18px rgba(255,150,100,0.25);
+}
+.formula-card .katex{font-size:1.4rem;color:var(--plum);}
+.tip-box{
+  background:var(--mint-light);
+  border-left:6px solid var(--mint);
+  border-radius:12px;
+  padding:12px 16px;
+  font-weight:700;
+  color:var(--plum);
+  margin:14px 0;
+}
+.example-box{
+  background:var(--lavender-light);
+  border-radius:var(--radius-md);
+  padding:16px 18px;
+  margin:12px 0;
+}
+.reveal-btn{
+  background:var(--coral);
+  color:#fff;font-weight:800;border:none;
+  padding:10px 20px;border-radius:999px;
+  font-size:0.95rem;
+  box-shadow:0 6px 14px rgba(255,122,92,0.35);
+  transition:transform .15s;
+}
+.reveal-btn:hover{transform:translateY(-2px) scale(1.03);}
+.answer-panel{
+  margin-top:12px;
+  background:var(--sun-light);
+  border-radius:var(--radius-md);
+  padding:14px 18px;
+  display:none;
+  font-weight:700;
+  color:var(--plum);
+}
+.answer-panel.show{display:block;animation:pageIn .35s ease;}
+
+/* compare / guess buttons */
+.compare-row{display:flex;gap:16px;flex-wrap:wrap;margin:14px 0;align-items:stretch;}
+.guess-card{
+  flex:1;min-width:140px;
+  background:var(--sky-light);
+  border:3px solid transparent;
+  border-radius:var(--radius-md);
+  padding:14px;
+  text-align:center;
+  font-weight:800;
+  color:var(--plum);
+  transition:all .18s;
+}
+.guess-card:hover{transform:translateY(-3px);box-shadow:0 8px 16px rgba(74,59,92,0.15);}
+.guess-card.correct{background:var(--mint-light);border-color:var(--mint);}
+.guess-card.wrong{background:#FFE1DA;border-color:var(--coral);}
+.guess-feedback{
+  margin-top:10px;font-weight:800;color:var(--mint);min-height:1.4em;
+}
+
+/* quiz */
+.quiz-block{
+  background:var(--sky-light);
+  border-radius:var(--radius-md);
+  padding:16px 20px;
+  margin:16px 0;
+}
+.quiz-q{font-weight:800;color:var(--plum);margin-bottom:10px;font-size:1.02rem;}
+.quiz-opts{display:flex;flex-direction:column;gap:8px;}
+.opt-btn{
+  text-align:left;
+  background:#fff;
+  border:2px solid var(--lavender-light);
+  border-radius:12px;
+  padding:10px 14px;
+  font-weight:700;color:var(--plum);
+  font-size:0.98rem;
+}
+.opt-btn:hover{border-color:var(--lavender);}
+.opt-btn.correct{background:var(--mint-light);border-color:var(--mint);color:var(--mint);}
+.opt-btn.wrong{background:#FFE1DA;border-color:var(--coral);}
+.opt-btn:disabled{cursor:default;}
+.quiz-fb{margin-top:8px;font-weight:800;min-height:1.3em;}
+
+/* matching game */
+.match-wrap{display:flex;gap:26px;flex-wrap:wrap;margin:16px 0;}
+.match-col{flex:1;min-width:180px;display:flex;flex-direction:column;gap:10px;}
+.match-item{
+  background:#fff;border:2px solid var(--lavender-light);border-radius:12px;
+  padding:10px 14px;font-weight:800;color:var(--plum);text-align:center;
+}
+.match-item.selected{border-color:var(--sun);background:var(--sun-light);}
+.match-item.locked{background:var(--mint-light);border-color:var(--mint);color:var(--mint);}
+
+/* checklist */
+.check-item{
+  display:flex;align-items:center;gap:12px;
+  background:var(--lavender-light);
+  border-radius:var(--radius-md);
+  padding:12px 16px;margin-bottom:10px;
+  font-weight:700;color:var(--plum);
+  cursor:pointer;
+  transition:background .2s;
+}
+.check-item.checked{background:var(--mint-light);}
+.check-box{
+  width:26px;height:26px;border-radius:8px;
+  background:#fff;border:2px solid var(--lavender);
+  display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;font-weight:900;color:var(--mint);
+}
+.check-item.checked .check-box{border-color:var(--mint);}
+
+/* stars */
+.star-row{display:flex;gap:8px;margin:14px 0;}
+.star-btn{font-size:2.2rem;background:none;border:none;filter:grayscale(1) opacity(0.5);transition:transform .15s;}
+.star-btn.active{filter:none;transform:scale(1.15);}
+
+/* nav controls */
+.nav-controls{
+  width:100%;max-width:900px;
+  display:flex;align-items:center;justify-content:space-between;
+  gap:12px;margin-top:18px;
+}
+.nav-btn{
+  font-family:'Fredoka',sans-serif;font-weight:600;
+  border:none;border-radius:999px;
+  padding:13px 26px;font-size:1rem;
+  display:flex;align-items:center;gap:8px;
+  box-shadow:0 8px 18px rgba(74,59,92,0.2);
+  transition:transform .15s;
+}
+.nav-btn:hover{transform:translateY(-2px);}
+.nav-btn:disabled{opacity:0.35;transform:none;cursor:default;box-shadow:none;}
+.nav-prev{background:#fff;color:var(--lavender-deep);}
+.nav-next{background:linear-gradient(90deg,var(--lavender),var(--sky));color:#fff;}
+.dot-label{font-weight:800;color:var(--plum);font-size:0.9rem;text-align:center;}
+
+/* certificate */
+.cert{
+  border:4px dashed var(--sun);
+  border-radius:var(--radius-lg);
+  padding:26px;text-align:center;
+  background:linear-gradient(160deg,#fff, var(--sun-light));
+  margin-top:16px;
+}
+.cert input{
+  font-family:'Fredoka',sans-serif;
+  font-size:1.3rem;text-align:center;
+  border:none;border-bottom:3px solid var(--coral);
+  background:transparent;color:var(--lavender-deep);
+  padding:6px 10px;width:80%;max-width:340px;
+}
+.cert input:focus{outline:none;}
+
+/* decorative floats */
+.floaty{position:absolute;opacity:0.5;pointer-events:none;}
+@keyframes floatY{0%,100%{transform:translateY(0);}50%{transform:translateY(-10px);}}
+.floaty{animation:floatY 4s ease-in-out infinite;}
+
+@media (max-width:600px){
+  .book{padding:24px 18px 24px;min-height:520px;}
+  h2{font-size:1.35rem;}
+  .content-grid{gap:14px;}
+  .nav-btn{padding:12px 16px;font-size:0.9rem;}
+}
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+@media (max-width:520px){.grid-2{grid-template-columns:1fr;}}
+.info-tile{
+  background:var(--sky-light);border-radius:var(--radius-sm);
+  padding:12px;text-align:center;font-weight:700;color:var(--plum);
+}
+.info-tile .big{font-size:1.6rem;display:block;margin-bottom:4px;}
+</style>
+</head>
+<body>
+
+<div class="tape-wrap">
+  <div class="tape-title">
+    <div class="brand" id="brandLogo"></div>
+    <div class="page-count"><span id="pageNumLbl">1</span> / 25</div>
+  </div>
+  <div class="tape">
+    <div class="tape-fill" id="tapeFill" style="width:0%"></div>
+    <div class="tape-ticks" id="tapeTicks"></div>
+    <div class="tape-marker" id="tapeMarker"></div>
+  </div>
+</div>
+
+<div class="book-stage">
+  <div class="book" id="book"></div>
+</div>
+
+<div class="nav-controls">
+  <button class="nav-btn nav-prev" id="prevBtn">◀ Sebelumnya</button>
+  <div class="dot-label" id="sectionLbl"></div>
+  <button class="nav-btn nav-next" id="nextBtn">Selanjutnya ▶</button>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.js"></script>
+<script>
+/* =========================================================
+   ILLUSTRATION LIBRARY — pseudo-3D SVGs (gradients + shadow)
+   ========================================================= */
+const COLORS = {lav:'#8C6FC7',lavD:'#6E4FA8',mint:'#3FB88C',sky:'#4AA3E0',coral:'#FF7A5C',sun:'#FFC94A',plum:'#4A3B5C'};
+
+function svgWrap(inner,vb='0 0 200 200',w=160){
+  return `<svg viewBox="${vb}" width="${w}" style="max-width:100%;height:auto;overflow:visible" xmlns="http://www.w3.org/2000/svg">${inner}</svg>`;
+}
+
+/* ---- Bunny mascot "Nana" in several poses ---- */
+function bunny(pose='wave', size=150){
+  const defs = `
+  <defs>
+    <linearGradient id="bBody" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#FFFFFF"/><stop offset="100%" stop-color="#F0E6FF"/>
+    </linearGradient>
+    <linearGradient id="bEar" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#FFFFFF"/><stop offset="100%" stop-color="#E6D6FA"/>
+    </linearGradient>
+    <radialGradient id="bCheek" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#FFB6A3"/><stop offset="100%" stop-color="#FFB6A3" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="bShadow" x="-50%" y="-50%" width="200%" height="200%">
+      <feDropShadow dx="0" dy="6" stdDeviation="6" flood-color="#4A3B5C" flood-opacity="0.25"/>
+    </filter>
+  </defs>`;
+  // ears
+  const ears = `
+    <ellipse cx="72" cy="42" rx="16" ry="40" fill="url(#bEar)" transform="rotate(-12 72 42)" stroke="#D9C4F2" stroke-width="2"/>
+    <ellipse cx="128" cy="42" rx="16" ry="40" fill="url(#bEar)" transform="rotate(12 128 42)" stroke="#D9C4F2" stroke-width="2"/>
+    <ellipse cx="72" cy="46" rx="7" ry="26" fill="#FFD9EC" transform="rotate(-12 72 46)"/>
+    <ellipse cx="128" cy="46" rx="7" ry="26" fill="#FFD9EC" transform="rotate(12 128 46)"/>`;
+  // body/head
+  const head = `<ellipse cx="100" cy="120" rx="58" ry="54" fill="url(#bBody)" stroke="#D9C4F2" stroke-width="2.5"/>`;
+  const cheeks = `<circle cx="72" cy="128" r="12" fill="url(#bCheek)"/><circle cx="128" cy="128" r="12" fill="url(#bCheek)"/>`;
+  let face='', arms='', extra='';
+  if(pose==='wave'){
+    face = eyesFace('happy');
+    arms = `<path d="M148 130 Q178 110 172 78" stroke="#F0E6FF" stroke-width="16" stroke-linecap="round" fill="none"/>
+            <circle cx="172" cy="76" r="11" fill="url(#bBody)" stroke="#D9C4F2" stroke-width="2"/>
+            <path d="M52 130 Q40 150 52 165" stroke="#F0E6FF" stroke-width="16" stroke-linecap="round" fill="none"/>`;
+  } else if(pose==='point'){
+    face = eyesFace('happy');
+    arms = `<path d="M150 128 Q186 118 196 100" stroke="#F0E6FF" stroke-width="16" stroke-linecap="round" fill="none"/>
+            <circle cx="198" cy="98" r="9" fill="url(#bBody)" stroke="#D9C4F2" stroke-width="2"/>
+            <path d="M52 130 Q40 148 50 162" stroke="#F0E6FF" stroke-width="16" stroke-linecap="round" fill="none"/>`;
+  } else if(pose==='think'){
+    face = eyesFace('think');
+    arms = `<path d="M140 118 Q128 90 108 84" stroke="#F0E6FF" stroke-width="16" stroke-linecap="round" fill="none"/>
+            <path d="M60 130 Q46 150 58 164" stroke="#F0E6FF" stroke-width="16" stroke-linecap="round" fill="none"/>`;
+  } else if(pose==='celebrate'){
+    face = eyesFace('star');
+    arms = `<path d="M150 126 Q182 100 178 66" stroke="#F0E6FF" stroke-width="16" stroke-linecap="round" fill="none"/>
+            <path d="M50 126 Q18 100 22 66" stroke="#F0E6FF" stroke-width="16" stroke-linecap="round" fill="none"/>
+            <circle cx="178" cy="64" r="10" fill="url(#bBody)" stroke="#D9C4F2" stroke-width="2"/>
+            <circle cx="22" cy="64" r="10" fill="url(#bBody)" stroke="#D9C4F2" stroke-width="2"/>`;
+  } else if(pose==='ruler'){
+    face = eyesFace('happy');
+    arms = `<path d="M145 132 Q176 132 190 118" stroke="#F0E6FF" stroke-width="16" stroke-linecap="round" fill="none"/>
+            <path d="M55 132 Q30 128 20 112" stroke="#F0E6FF" stroke-width="16" stroke-linecap="round" fill="none"/>
+            <rect x="14" y="98" width="118" height="18" rx="5" fill="${COLORS.sun}" stroke="#E0A62E" stroke-width="2" transform="rotate(-8 73 107)"/>`;
+  }
+  const nose = `<path d="M94 138 Q100 144 106 138 Q100 148 94 138Z" fill="#C77B9E"/>`;
+  const body = `${ears}${head}${cheeks}${face}${nose}${arms}`;
+  return `<svg viewBox="0 0 200 200" width="${size}" style="max-width:100%;height:auto;overflow:visible;filter:url(#bShadow)" xmlns="http://www.w3.org/2000/svg">${defs}${body}</svg>`;
+}
+function eyesFace(kind){
+  if(kind==='happy') return `<circle cx="82" cy="112" r="6.5" fill="${COLORS.plum}"/><circle cx="118" cy="112" r="6.5" fill="${COLORS.plum}"/>
+    <circle cx="84" cy="109" r="2" fill="#fff"/><circle cx="120" cy="109" r="2" fill="#fff"/>`;
+  if(kind==='think') return `<path d="M76 112 q6 -6 12 0" stroke="${COLORS.plum}" stroke-width="3.5" fill="none" stroke-linecap="round"/>
+    <circle cx="118" cy="112" r="6.5" fill="${COLORS.plum}"/><circle cx="120" cy="109" r="2" fill="#fff"/>`;
+  if(kind==='star') return `<path d="M82 106l3 6 6 1-4.5 4 1 6-5.5-3-5.5 3 1-6-4.5-4 6-1z" fill="${COLORS.sun}"/>
+    <path d="M118 106l3 6 6 1-4.5 4 1 6-5.5-3-5.5 3 1-6-4.5-4 6-1z" fill="${COLORS.sun}"/>`;
+  return '';
+}
+
+/* ---- Ruler (penggaris) with cm ticks, optional highlighted object length ---- */
+function ruler(len=15, highlight=0, label='', width=280){
+  const startX=20, endX=280, top=20, h=46;
+  const scale=(endX-startX)/len;
+  let ticks='';
+  for(let i=0;i<=len;i++){
+    const x=startX+i*scale;
+    const tall = i%5===0;
+    ticks += `<line x1="${x}" y1="${top}" x2="${x}" y2="${top+(tall?22:12)}" stroke="${COLORS.plum}" stroke-width="${tall?2:1}"/>`;
+    if(tall) ticks += `<text x="${x}" y="${top+34}" font-size="11" font-weight="800" fill="${COLORS.plum}" text-anchor="middle" font-family="Nunito">${i}</text>`;
+  }
+  let hi='';
+  if(highlight>0){
+    hi = `<rect x="${startX}" y="${top+2}" width="${highlight*scale}" height="16" rx="4" fill="${COLORS.coral}" opacity="0.55"/>
+          <text x="${startX+ (highlight*scale)/2}" y="${top-6}" font-size="12" font-weight="800" fill="${COLORS.coral}" text-anchor="middle" font-family="Nunito">${label}</text>`;
+  }
+  const body=`
+    <rect x="10" y="10" width="290" height="66" rx="10" fill="#FFFDF3" stroke="#E9D9A0" stroke-width="2"/>
+    ${hi}
+    ${ticks}
+  `;
+  return `<svg viewBox="0 0 310 90" width="${width}" style="max-width:100%;height:auto" xmlns="http://www.w3.org/2000/svg">
+    <defs><filter id="rShadow"><feDropShadow dx="0" dy="4" stdDeviation="4" flood-color="#4A3B5C" flood-opacity="0.2"/></filter></defs>
+    <g filter="url(#rShadow)">${body}</g>
+  </svg>`;
+}
+
+/* ---- Tape measure (meteran) coil ---- */
+function tapeMeasure(width=140){
+  return `<svg viewBox="0 0 160 160" width="${width}" style="max-width:100%;height:auto" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="tmBody" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="${COLORS.sky}"/><stop offset="100%" stop-color="${COLORS.lavD}"/>
+    </linearGradient>
+    <filter id="tmShadow"><feDropShadow dx="0" dy="6" stdDeviation="5" flood-color="#4A3B5C" flood-opacity="0.3"/></filter>
+  </defs>
+  <g filter="url(#tmShadow)">
+    <circle cx="80" cy="80" r="62" fill="url(#tmBody)"/>
+    <circle cx="80" cy="80" r="44" fill="#FFFDF3"/>
+    <path d="M80 44 A36 36 0 0 1 116 80" stroke="#E9D9A0" stroke-width="6" fill="none" stroke-linecap="round"/>
+    <text x="80" y="70" font-size="13" font-weight="800" fill="${COLORS.plum}" text-anchor="middle" font-family="Nunito">0 1 2</text>
+    <text x="80" y="94" font-size="20" font-weight="800" fill="${COLORS.coral}" text-anchor="middle" font-family="Fredoka">cm/m</text>
+    <rect x="126" y="72" width="26" height="16" rx="4" fill="${COLORS.sun}"/>
+  </g>
+  </svg>`;
+}
+
+/* ---- Digital / kitchen scale showing a value ---- */
+function scaleDigital(value='0 g', width=170){
+  return `<svg viewBox="0 0 180 150" width="${width}" style="max-width:100%;height:auto" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="sdBody" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#ffffff"/><stop offset="100%" stop-color="${COLORS.mint}" stop-opacity="0.25"/>
+    </linearGradient>
+    <filter id="sdShadow"><feDropShadow dx="0" dy="6" stdDeviation="5" flood-color="#4A3B5C" flood-opacity="0.28"/></filter>
+  </defs>
+  <g filter="url(#sdShadow)">
+    <rect x="15" y="60" width="150" height="70" rx="18" fill="url(#sdBody)" stroke="${COLORS.mint}" stroke-width="3"/>
+    <rect x="45" y="78" width="90" height="34" rx="8" fill="${COLORS.plum}"/>
+    <text x="90" y="101" font-size="16" font-weight="800" fill="#8CFFCB" text-anchor="middle" font-family="Fredoka">${value}</text>
+    <ellipse cx="90" cy="60" rx="70" ry="14" fill="#fff" stroke="${COLORS.mint}" stroke-width="3"/>
+  </g>
+  </svg>`;
+}
+
+/* ---- Balance scale (neraca) with two items and tilt ---- */
+function balance(leftEmoji='🐜', rightEmoji='🐘', tilt='right', width=260){
+  const ang = tilt==='right'? 10 : (tilt==='left'? -10 : 0);
+  const leftY = tilt==='right'? -6 : (tilt==='left'? 14 : 4);
+  const rightY = tilt==='right'? 14 : (tilt==='left'? -6 : 4);
+  return `<svg viewBox="0 0 260 190" width="${width}" style="max-width:100%;height:auto" xmlns="http://www.w3.org/2000/svg">
+  <defs><filter id="baShadow"><feDropShadow dx="0" dy="6" stdDeviation="5" flood-color="#4A3B5C" flood-opacity="0.25"/></filter></defs>
+  <g filter="url(#baShadow)">
+    <rect x="126" y="60" width="8" height="90" rx="3" fill="${COLORS.lavD}"/>
+    <rect x="90" y="150" width="80" height="10" rx="4" fill="${COLORS.lavD}"/>
+    <circle cx="130" cy="55" r="9" fill="${COLORS.sun}"/>
+    <g transform="rotate(${ang} 130 55)">
+      <line x1="130" y1="55" x2="45" y2="60" stroke="${COLORS.plum}" stroke-width="4"/>
+      <line x1="130" y1="55" x2="215" y2="60" stroke="${COLORS.plum}" stroke-width="4"/>
+      <line x1="45" y1="60" x2="45" y2="${95+leftY}" stroke="${COLORS.plum}" stroke-width="2"/>
+      <line x1="215" y1="60" x2="215" y2="${95+rightY}" stroke="${COLORS.plum}" stroke-width="2"/>
+      <ellipse cx="45" cy="${105+leftY}" rx="34" ry="14" fill="${COLORS.sky}" opacity="0.35"/>
+      <text x="45" y="${112+leftY}" font-size="30" text-anchor="middle">${leftEmoji}</text>
+      <ellipse cx="215" cy="${105+rightY}" rx="34" ry="14" fill="${COLORS.coral}" opacity="0.35"/>
+      <text x="215" y="${112+rightY}" font-size="30" text-anchor="middle">${rightEmoji}</text>
+    </g>
+  </g>
+  </svg>`;
+}
+
+/* generic labelled emoji tile (for objects, kept simple+cute) */
+function tile(emoji, label, color='sky'){
+  return `<div class="info-tile" style="background:var(--${color}-light)"><span class="big">${emoji}</span>${label}</div>`;
+}
+function longBar(lengthLabel, color='mint'){
+  return `<svg viewBox="0 0 300 70" width="260" style="max-width:100%;height:auto" xmlns="http://www.w3.org/2000/svg">
+  <defs><filter id="lbShadow"><feDropShadow dx="0" dy="5" stdDeviation="4" flood-color="#4A3B5C" flood-opacity="0.25"/></filter>
+  <linearGradient id="lbGrad" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="${COLORS[color]||COLORS.mint}"/><stop offset="100%" stop-color="${COLORS.sky}"/></linearGradient></defs>
+  <g filter="url(#lbShadow)">
+    <rect x="10" y="20" width="280" height="26" rx="13" fill="url(#lbGrad)"/>
+    <circle cx="10" cy="33" r="15" fill="${COLORS.sun}"/><circle cx="290" cy="33" r="15" fill="${COLORS.sun}"/>
+    <text x="150" y="40" font-size="15" font-weight="800" fill="#fff" text-anchor="middle" font-family="Fredoka">${lengthLabel}</text>
+  </g></svg>`;
+}
+function kx(tex){ return `<span class="kx-holder" data-tex="${tex.replace(/"/g,'&quot;')}"></span>`; }
+function nana(pose,text,size=110){ return `<div class="nana-row">${bunny(pose,size)}<div class="speech">${text}</div></div>`; }
+function sec(label,cls){ return `<span class="eyebrow ${cls}">${label}</span>`; }
+
+/* =========================================================
+   PAGES  (25 total)
+   ========================================================= */
+const PAGES = [];
+
+/* ---------- 1. SAMPUL ---------- */
+PAGES.push({
+  navLabel:'Sampul',
+  html:`
+  <div style="text-align:center;padding-top:6px;">
+    <div style="display:inline-flex;gap:8px;align-items:center;background:var(--sun-light);color:var(--plum);font-weight:800;padding:6px 16px;border-radius:999px;font-size:0.8rem;margin-bottom:10px;">
+      🌿 Kurikulum Merdeka &nbsp;•&nbsp; Kelas 2 SD
+    </div>
+    <h1 style="font-size:2.3rem;color:var(--lavender-deep);margin:6px 0 2px;">Kebun Ukur Nana</h1>
+    <h3 style="color:var(--coral);font-weight:600;margin-top:0;">Belajar Mengukur Panjang &amp; Berat, Yuk!</h3>
+    <div style="margin:18px 0;">${bunny('celebrate',190)}</div>
+    <p style="max-width:420px;margin:0 auto 18px;font-weight:700;color:var(--plum);">Ikuti petualangan Nana si kelinci untuk menjelajahi dunia penggaris, timbangan, sentimeter, meter, gram, dan kilogram!</p>
+    <button class="reveal-btn" onclick="renderPage(1)" style="font-size:1.05rem;padding:14px 30px;">Ayo Mulai! 🌱</button>
+  </div>
+  <div class="floaty" style="top:24px;left:24px;font-size:1.6rem;">☁️</div>
+  <div class="floaty" style="top:40px;right:30px;font-size:1.4rem;animation-delay:1s;">⭐</div>
+  <div class="floaty" style="bottom:20px;left:40px;font-size:1.5rem;animation-delay:2s;">🌸</div>
+  `
+});
+
+/* ---------- 2. TUJUAN ---------- */
+PAGES.push({
+  navLabel:'Tujuan Pembelajaran',
+  html:`
+  ${sec('TUJUAN','eb-tujuan')}
+  <h2>Setelah belajar ini, kamu bisa...</h2>
+  ${nana('point','Yuk simak, ini tujuan petualangan kita hari ini!')}
+  <div class="content-grid">
+    <div class="col-text">
+      <ul class="card-list">
+        <li><span class="ico">📏</span>Mengenal alat ukur panjang dan berat yang tepat untuk berbagai benda</li>
+        <li><span class="ico">📐</span>Mengukur panjang benda memakai satuan <b>sentimeter (cm)</b> dan <b>meter (m)</b></li>
+        <li><span class="ico">⚖️</span>Mengukur berat benda memakai satuan <b>gram (g)</b> dan <b>kilogram (kg)</b></li>
+        <li><span class="ico">🔄</span>Mengubah cm menjadi m, dan kg menjadi gram dengan cara yang mudah</li>
+      </ul>
+    </div>
+    <div class="col-illust">${tapeMeasure(170)}</div>
+  </div>
+  `
+});
+
+/* ---------- 3. WARM-UP PANJANG ---------- */
+PAGES.push({
+  navLabel:'Pemanasan: Tebak Panjang',
+  html:`
+  ${sec('PEMANASAN','eb-pemanasan')}
+  <h2>Mana yang Lebih Panjang, ya? 🤔</h2>
+  ${nana('think','Tebak dulu sebelum kita belajar. Jangan diukur pakai penggaris dulu, ya, coba tebak saja!')}
+  <p style="font-weight:700;">Ronde 1: Ular atau Cacing?</p>
+  <div class="compare-row">
+    <div class="guess-card" data-correct="true" onclick="guessPick(this,true)">🐍<br>Ular</div>
+    <div class="guess-card" data-correct="false" onclick="guessPick(this,false)">🐛<br>Cacing</div>
+  </div>
+  <div class="guess-feedback"></div>
+  <p style="font-weight:700;margin-top:18px;">Ronde 2: Pensil atau Klip Kertas?</p>
+  <div class="compare-row">
+    <div class="guess-card" data-correct="true" onclick="guessPick(this,true)">✏️<br>Pensil</div>
+    <div class="guess-card" data-correct="false" onclick="guessPick(this,false)">📎<br>Klip Kertas</div>
+  </div>
+  <div class="guess-feedback"></div>
+  `
+});
+
+/* ---------- 4. WARM-UP BERAT ---------- */
+PAGES.push({
+  navLabel:'Pemanasan: Tebak Berat',
+  html:`
+  ${sec('PEMANASAN','eb-pemanasan')}
+  <h2>Mana yang Lebih Berat, ya? ⚖️</h2>
+  ${nana('think','Sekarang giliran menebak berat. Bayangkan kamu mengangkatnya!')}
+  <div class="content-grid">
+    <div class="col-illust">${balance('🐜','🐘','right',230)}</div>
+    <div class="col-text">
+      <p style="font-weight:700;">Ronde 1: Semut atau Gajah?</p>
+      <div class="compare-row">
+        <div class="guess-card" data-correct="false" onclick="guessPick(this,false)">🐜<br>Semut</div>
+        <div class="guess-card" data-correct="true" onclick="guessPick(this,true)">🐘<br>Gajah</div>
+      </div>
+      <div class="guess-feedback"></div>
+    </div>
+  </div>
+  <p style="font-weight:700;margin-top:10px;">Ronde 2: Batu atau Bulu Ayam?</p>
+  <div class="compare-row">
+    <div class="guess-card" data-correct="true" onclick="guessPick(this,true)">🪨<br>Batu</div>
+    <div class="guess-card" data-correct="false" onclick="guessPick(this,false)">🪶<br>Bulu Ayam</div>
+  </div>
+  <div class="guess-feedback"></div>
+  `
+});
+
+/* ---------- 5. KONEKSI: CERITA PASAR ---------- */
+PAGES.push({
+  navLabel:'Cerita Nana di Pasar',
+  html:`
+  ${sec('KONEKSI DUNIA NYATA','eb-koneksi')}
+  <h2>Cerita Nana di Pasar</h2>
+  <div class="content-grid">
+    <div class="col-text">
+      <p>Hari Minggu pagi, Nana ikut Ibu belanja ke pasar. Ibu membeli <b>gula 1 kilogram</b> dan meminta penjual memotong <b>tali sepanjang 2 meter</b> untuk mengikat bungkusan belanjaan.</p>
+      <p>Nana bertanya, "Bu, kenapa harus ditimbang dan diukur pas segitu?" Ibu tersenyum, "Supaya kita tidak membayar lebih mahal, dan tali kita cukup, tidak kurang, tidak juga terlalu panjang."</p>
+      <div class="tip-box">💡 Mengukur membuat semuanya jadi pas — tidak kurang, tidak berlebihan!</div>
+    </div>
+    <div class="col-illust" style="flex-direction:column;gap:10px;">
+      <div>${scaleDigital('1 kg')}</div>
+      <div>${longBar('2 meter','coral')}</div>
+    </div>
+  </div>
+  `
+});
+
+/* ---------- 6. KONEKSI: DI SEKITAR KITA ---------- */
+PAGES.push({
+  navLabel:'Mengukur di Sekitar Kita',
+  html:`
+  ${sec('KONEKSI DUNIA NYATA','eb-koneksi')}
+  <h2>Ternyata, Mengukur Ada di Mana-mana!</h2>
+  ${nana('wave','Coba tebak, di mana lagi kamu pernah melihat orang mengukur?')}
+  <div class="grid-2">
+    ${tile('⚖️','Menimbang badan di posyandu','mint')}
+    ${tile('📏','Mengukur tinggi badan','sky')}
+    ${tile('🛒','Membeli gula &amp; beras di warung','sun')}
+    ${tile('✂️','Penjahit mengukur kain baju','coral')}
+    ${tile('📐','Mengukur panjang meja belajar','lavender')}
+    ${tile('🍉','Menimbang buah di pasar','mint')}
+  </div>
+  `
+});
+
+/* ---------- 7. MATERI: ALAT UKUR PANJANG ---------- */
+PAGES.push({
+  navLabel:'Alat Ukur Panjang',
+  html:`
+  ${sec('MATERI','eb-materi')}
+  <h2>Mengenal Alat Ukur Panjang</h2>
+  <div class="content-grid">
+    <div class="col-illust">${ruler(15,0,'')}</div>
+    <div class="col-text">
+      <h3>📏 Penggaris</h3>
+      <p>Dipakai untuk mengukur benda-benda kecil seperti pensil, buku, dan penghapus.</p>
+    </div>
+  </div>
+  <div class="content-grid" style="margin-top:10px;">
+    <div class="col-illust">${tapeMeasure(140)}</div>
+    <div class="col-text">
+      <h3>🧵 Meteran / Pita Ukur</h3>
+      <p>Dipakai untuk mengukur benda yang panjang atau melengkung, seperti tinggi badan, panjang kain, atau panjang ruangan.</p>
+    </div>
+  </div>
+  ${nana('point','Pilih alat yang tepat sesuai ukuran bendanya, ya!','90')}
+  `
+});
+
+/* ---------- 8. MATERI: SENTIMETER ---------- */
+PAGES.push({
+  navLabel:'Satuan cm',
+  html:`
+  ${sec('MATERI','eb-materi')}
+  <h2>Satuan Panjang: Sentimeter (cm)</h2>
+  <p>Sentimeter dipakai untuk mengukur benda-benda <b>kecil</b>. Perhatikan penggaris di bawah ini — pensil Nana panjangnya <b>12 cm</b>.</p>
+  <div style="text-align:center;margin:14px 0;">${ruler(15,12,'12 cm')}</div>
+  <div class="chip">✏️ Pensil ≈ 12 cm</div>
+  <div class="chip">📖 Lebar buku ≈ 15 cm</div>
+  <div class="chip">🧼 Penghapus ≈ 4 cm</div>
+  `
+});
+
+/* ---------- 9. MATERI: METER ---------- */
+PAGES.push({
+  navLabel:'Satuan m',
+  html:`
+  ${sec('MATERI','eb-materi')}
+  <h2>Satuan Panjang: Meter (m)</h2>
+  <p>Kalau bendanya <b>besar atau panjang</b>, kita pakai satuan meter (m). Meter dipakai untuk mengukur panjang kelas, tinggi pintu, atau lapangan.</p>
+  <div style="text-align:center;margin:14px 0;">${longBar('1 meter','mint')}</div>
+  <div class="content-grid">
+    <div class="col-text">
+      <div class="chip">🚪 Tinggi pintu ≈ 2 m</div>
+      <div class="chip">🏫 Panjang papan tulis ≈ 3 m</div>
+      <div class="chip">⚽ Lebar lapangan ≈ 30 m</div>
+    </div>
+    <div class="col-illust">${bunny('wave',120)}</div>
+  </div>
+  `
+});
+
+/* ---------- 10. MATERI: CARA MEMBACA PENGGARIS ---------- */
+PAGES.push({
+  navLabel:'Cara Membaca Penggaris',
+  html:`
+  ${sec('MATERI','eb-materi')}
+  <h2>Cara Membaca Penggaris dengan Benar</h2>
+  <ol class="card-list" style="counter-reset:step;">
+    <li><span class="ico">1️⃣</span>Letakkan ujung benda tepat di angka <b>0</b>.</li>
+    <li><span class="ico">2️⃣</span>Lihat angka di ujung benda yang satunya.</li>
+    <li><span class="ico">3️⃣</span>Angka itulah panjang bendanya, dalam satuan cm.</li>
+  </ol>
+  <div style="text-align:center;margin:14px 0;">${ruler(15,10,'? cm')}</div>
+  <p style="font-weight:700;">Sebuah sedotan diletakkan dari angka 0 sampai angka 10. Berapa cm panjangnya?</p>
+  <button class="reveal-btn" onclick="document.getElementById('ans10').classList.add('show')">Lihat Jawaban 👀</button>
+  <div class="answer-panel" id="ans10">✅ Panjang sedotan itu adalah <b>10 cm</b>, karena diukur dari angka 0 sampai angka 10.</div>
+  `
+});
+
+/* ---------- 11. MATERI: KONVERSI CM<->M ---------- */
+PAGES.push({
+  navLabel:'Konversi cm ke m',
+  html:`
+  ${sec('MATERI','eb-materi')}
+  <h2>Mengubah Sentimeter ke Meter</h2>
+  <p>Ternyata, <b>100 cm</b> itu sama panjangnya dengan <b>1 m</b>! Jadi kalau angkanya banyak nol-nya, kita bisa mengubahnya jadi meter supaya lebih mudah dibaca.</p>
+  <div class="formula-card">${kx('100\\ cm = 1\\ m')}</div>
+  <div style="text-align:center;">
+    <span class="chip">100 cm = 1 m</span>
+    <span class="chip">200 cm = 2 m</span>
+    <span class="chip">300 cm = 3 m</span>
+  </div>
+  <div class="tip-box">💡 Trik: hitung ada berapa "ratusan" cm, itulah jumlah meternya!</div>
+  ${nana('point','200 cm sama saja dengan 2 buah tali 1 meter yang disambung!','90')}
+  `
+});
+
+/* ---------- 12. MATERI: ALAT UKUR BERAT ---------- */
+PAGES.push({
+  navLabel:'Alat Ukur Berat',
+  html:`
+  ${sec('MATERI','eb-materi')}
+  <h2>Mengenal Alat Ukur Berat</h2>
+  <div class="content-grid">
+    <div class="col-illust">${scaleDigital('32 kg')}</div>
+    <div class="col-text">
+      <h3>⚖️ Timbangan Badan</h3>
+      <p>Dipakai untuk menimbang berat badan manusia, biasanya dalam satuan kilogram (kg).</p>
+    </div>
+  </div>
+  <div class="content-grid" style="margin-top:10px;">
+    <div class="col-illust">${scaleDigital('250 g')}</div>
+    <div class="col-text">
+      <h3>🍬 Timbangan Dapur</h3>
+      <p>Dipakai untuk menimbang bahan makanan seperti gula, tepung, atau bumbu dapur, biasanya dalam satuan gram (g).</p>
+    </div>
+  </div>
+  `
+});
+
+/* ---------- 13. MATERI: GRAM ---------- */
+PAGES.push({
+  navLabel:'Satuan gram',
+  html:`
+  ${sec('MATERI','eb-materi')}
+  <h2>Satuan Berat: Gram (g)</h2>
+  <p>Gram dipakai untuk benda-benda yang <b>ringan</b> atau tidak terlalu berat.</p>
+  <div style="text-align:center;margin:14px 0;">${scaleDigital('250 g')}</div>
+  <div class="chip">🧂 Sebungkus garam ≈ 250 g</div>
+  <div class="chip">📄 Selembar kertas ≈ 5 g</div>
+  <div class="chip">🍫 Sebatang cokelat ≈ 50 g</div>
+  `
+});
+
+/* ---------- 14. MATERI: KILOGRAM ---------- */
+PAGES.push({
+  navLabel:'Satuan kg',
+  html:`
+  ${sec('MATERI','eb-materi')}
+  <h2>Satuan Berat: Kilogram (kg)</h2>
+  <p>Kalau bendanya <b>berat</b>, kita pakai satuan kilogram (kg).</p>
+  <div style="text-align:center;margin:14px 0;">${scaleDigital('5 kg')}</div>
+  <div class="chip">🌾 Sekarung beras ≈ 5 kg</div>
+  <div class="chip">🧍‍♀️ Berat badan anak ≈ 25 kg</div>
+  <div class="chip">🍉 Semangka ≈ 3 kg</div>
+  `
+});
+
+/* ---------- 15. MATERI: KONVERSI KG<->GRAM ---------- */
+PAGES.push({
+  navLabel:'Konversi kg ke gram',
+  html:`
+  ${sec('MATERI','eb-materi')}
+  <h2>Mengubah Kilogram ke Gram</h2>
+  <p><b>1 kilogram</b> sama beratnya dengan <b>1000 gram</b>. Bayangkan 1 kg gula dibagi menjadi 1000 butir kecil-kecil!</p>
+  <div class="formula-card">${kx('1\\ kg = 1000\\ g')}</div>
+  <div style="text-align:center;">
+    <span class="chip">1 kg = 1000 g</span>
+    <span class="chip">2 kg = 2000 g</span>
+    <span class="chip">5 kg = 5000 g</span>
+  </div>
+  <div class="tip-box">💡 Trik: tinggal tambahkan tiga angka nol di belakang jumlah kilogramnya!</div>
+  ${nana('celebrate','Gampang, kan? Yuk lanjut ke contoh soal!','90')}
+  `
+});
+
+/* ---------- 16. CONTOH SOAL: MENGUKUR PANJANG ---------- */
+PAGES.push({
+  navLabel:'Contoh Soal: Mengukur Panjang',
+  html:`
+  ${sec('CONTOH SOAL','eb-contoh')}
+  <h2>Yuk, Coba Selesaikan Bersama!</h2>
+  <div class="example-box">
+    <p style="font-weight:800;margin-top:0;">Soal: Pensil Kiki diletakkan dari angka 0 sampai angka 9 pada penggaris. Berapa cm panjang pensil itu?</p>
+    <div style="text-align:center;margin:10px 0;">${ruler(15,9,'? cm')}</div>
+    <button class="reveal-btn" onclick="document.getElementById('ans16').classList.add('show')">Lihat Jawaban 👀</button>
+    <div class="answer-panel" id="ans16">
+      <b>Langkah:</b> ujung pensil ada di angka 0, ujung satunya di angka 9.<br>
+      ✅ Jadi, panjang pensil Kiki adalah <b>9 cm</b>.
+    </div>
+  </div>
+  `
+});
+
+/* ---------- 17. CONTOH SOAL: KONVERSI PANJANG ---------- */
+PAGES.push({
+  navLabel:'Contoh Soal: Konversi Panjang',
+  html:`
+  ${sec('CONTOH SOAL','eb-contoh')}
+  <h2>Contoh Soal: Konversi Satuan Panjang</h2>
+  <div class="example-box">
+    <p style="font-weight:800;margin-top:0;">Soal: Panjang meja belajar Nana adalah 100 cm. Berapa meter panjang meja itu?</p>
+    <button class="reveal-btn" onclick="document.getElementById('ans17a').classList.add('show')">Lihat Jawaban 👀</button>
+    <div class="answer-panel" id="ans17a">
+      Ingat: ${kx('100\\ cm = 1\\ m')}<br>
+      ✅ Jadi, panjang meja itu adalah <b>1 meter</b>.
+    </div>
+  </div>
+  <div class="example-box">
+    <p style="font-weight:800;margin-top:0;">Soal: Tinggi pintu rumah Nana adalah 200 cm. Berapa meter tinggi pintu itu?</p>
+    <button class="reveal-btn" onclick="document.getElementById('ans17b').classList.add('show')">Lihat Jawaban 👀</button>
+    <div class="answer-panel" id="ans17b">
+      Ingat: setiap 100 cm = 1 m, dan 200 cm ada 2 buah "seratus".<br>
+      ✅ Jadi, tinggi pintu itu adalah <b>2 meter</b>.
+    </div>
+  </div>
+  `
+});
+
+/* ---------- 18. CONTOH SOAL: BERAT ---------- */
+PAGES.push({
+  navLabel:'Contoh Soal: Berat',
+  html:`
+  ${sec('CONTOH SOAL','eb-contoh')}
+  <h2>Contoh Soal: Mengukur &amp; Konversi Berat</h2>
+  <div class="example-box">
+    <p style="font-weight:800;margin-top:0;">Soal: Ibu membeli 2 kantong gula, masing-masing beratnya 1 kg. Berapa kg semuanya, dan berapa gram?</p>
+    <button class="reveal-btn" onclick="document.getElementById('ans18').classList.add('show')">Lihat Jawaban 👀</button>
+    <div class="answer-panel" id="ans18">
+      <b>Langkah:</b> 1 kg + 1 kg = 2 kg.<br>
+      Ingat: ${kx('1\\ kg = 1000\\ g')}, jadi 2 kg = 2000 g.<br>
+      ✅ Jadi, gula Ibu seluruhnya adalah <b>2 kg</b> atau sama dengan <b>2000 gram</b>.
+    </div>
+  </div>
+  ${nana('point','Bagus banget! Sekarang giliranmu latihan sendiri, ya!','90')}
+  `
+});
+
+/* ---------- 19. LATIHAN 1: PANJANG ---------- */
+PAGES.push({
+  navLabel:'Latihan Soal: Panjang',
+  html:`
+  ${sec('LATIHAN SOAL','eb-latihan')}
+  <h2>Latihan Soal 1 — Panjang</h2>
+  <div class="quiz-block">
+    <div class="quiz-q">1. Alat apa yang paling tepat untuk mengukur panjang pensil?</div>
+    <div class="quiz-opts">
+      <button class="opt-btn" data-correct="true" onclick="answerMCQ(this,true,'fb19a')">Penggaris</button>
+      <button class="opt-btn" data-correct="false" onclick="answerMCQ(this,false,'fb19a')">Timbangan</button>
+      <button class="opt-btn" data-correct="false" onclick="answerMCQ(this,false,'fb19a')">Gelas ukur</button>
+    </div>
+    <div class="quiz-fb" id="fb19a"></div>
+  </div>
+  <div class="quiz-block">
+    <div class="quiz-q">2. Pita merah panjangnya 8 cm, pita biru panjangnya 5 cm. Pita mana yang lebih panjang?</div>
+    <div class="quiz-opts">
+      <button class="opt-btn" data-correct="true" onclick="answerMCQ(this,true,'fb19b')">Pita merah (8 cm)</button>
+      <button class="opt-btn" data-correct="false" onclick="answerMCQ(this,false,'fb19b')">Pita biru (5 cm)</button>
+    </div>
+    <div class="quiz-fb" id="fb19b"></div>
+  </div>
+  <div class="quiz-block">
+    <div class="quiz-q">3. Untuk mengukur panjang lapangan sekolah, satuan apa yang paling cocok?</div>
+    <div class="quiz-opts">
+      <button class="opt-btn" data-correct="false" onclick="answerMCQ(this,false,'fb19c')">Sentimeter (cm)</button>
+      <button class="opt-btn" data-correct="true" onclick="answerMCQ(this,true,'fb19c')">Meter (m)</button>
+    </div>
+    <div class="quiz-fb" id="fb19c"></div>
+  </div>
+  `
+});
+
+/* ---------- 20. LATIHAN 2: BERAT ---------- */
+PAGES.push({
+  navLabel:'Latihan Soal: Berat',
+  html:`
+  ${sec('LATIHAN SOAL','eb-latihan')}
+  <h2>Latihan Soal 2 — Berat</h2>
+  <div class="quiz-block">
+    <div class="quiz-q">1. Alat apa yang paling tepat untuk mengukur berat badan?</div>
+    <div class="quiz-opts">
+      <button class="opt-btn" data-correct="false" onclick="answerMCQ(this,false,'fb20a')">Penggaris</button>
+      <button class="opt-btn" data-correct="true" onclick="answerMCQ(this,true,'fb20a')">Timbangan badan</button>
+      <button class="opt-btn" data-correct="false" onclick="answerMCQ(this,false,'fb20a')">Meteran</button>
+    </div>
+    <div class="quiz-fb" id="fb20a"></div>
+  </div>
+  <div class="quiz-block">
+    <div class="quiz-q">2. Mana yang lebih berat, gajah atau semut?</div>
+    <div class="quiz-opts">
+      <button class="opt-btn" data-correct="true" onclick="answerMCQ(this,true,'fb20b')">Gajah</button>
+      <button class="opt-btn" data-correct="false" onclick="answerMCQ(this,false,'fb20b')">Semut</button>
+    </div>
+    <div class="quiz-fb" id="fb20b"></div>
+  </div>
+  <div class="quiz-block">
+    <div class="quiz-q">3. Untuk menimbang sebungkus kecil garam, satuan apa yang paling cocok?</div>
+    <div class="quiz-opts">
+      <button class="opt-btn" data-correct="true" onclick="answerMCQ(this,true,'fb20c')">Gram</button>
+      <button class="opt-btn" data-correct="false" onclick="answerMCQ(this,false,'fb20c')">Kilogram</button>
+    </div>
+    <div class="quiz-fb" id="fb20c"></div>
+  </div>
+  `
+});
+
+/* ---------- 21. LATIHAN 3: KONVERSI CAMPURAN ---------- */
+PAGES.push({
+  navLabel:'Latihan Soal: Konversi',
+  html:`
+  ${sec('LATIHAN SOAL','eb-latihan')}
+  <h2>Latihan Soal 3 — Konversi Satuan</h2>
+  <div class="quiz-block">
+    <div class="quiz-q">1. 200 cm = ... m</div>
+    <div class="quiz-opts">
+      <button class="opt-btn" data-correct="false" onclick="answerMCQ(this,false,'fb21a')">20 m</button>
+      <button class="opt-btn" data-correct="true" onclick="answerMCQ(this,true,'fb21a')">2 m</button>
+      <button class="opt-btn" data-correct="false" onclick="answerMCQ(this,false,'fb21a')">200 m</button>
+    </div>
+    <div class="quiz-fb" id="fb21a"></div>
+  </div>
+  <div class="quiz-block">
+    <div class="quiz-q">2. 3 kg = ... gram</div>
+    <div class="quiz-opts">
+      <button class="opt-btn" data-correct="false" onclick="answerMCQ(this,false,'fb21b')">300 gram</button>
+      <button class="opt-btn" data-correct="true" onclick="answerMCQ(this,true,'fb21b')">3000 gram</button>
+      <button class="opt-btn" data-correct="false" onclick="answerMCQ(this,false,'fb21b')">30 gram</button>
+    </div>
+    <div class="quiz-fb" id="fb21b"></div>
+  </div>
+  <div class="quiz-block">
+    <div class="quiz-q">3. 1 m = ... cm</div>
+    <div class="quiz-opts">
+      <button class="opt-btn" data-correct="false" onclick="answerMCQ(this,false,'fb21c')">10 cm</button>
+      <button class="opt-btn" data-correct="true" onclick="answerMCQ(this,true,'fb21c')">100 cm</button>
+      <button class="opt-btn" data-correct="false" onclick="answerMCQ(this,false,'fb21c')">1000 cm</button>
+    </div>
+    <div class="quiz-fb" id="fb21c"></div>
+  </div>
+  `
+});
+
+/* ---------- 22. LATIHAN 4: MENCOCOKKAN ---------- */
+PAGES.push({
+  navLabel:'Latihan Soal: Mencocokkan',
+  html:`
+  ${sec('LATIHAN SOAL','eb-latihan')}
+  <h2>Latihan Soal 4 — Cocokkan Pasangannya!</h2>
+  <p style="font-weight:700;">Sentuh satu benda di kiri, lalu sentuh alat ukur yang cocok di kanan.</p>
+  <div class="match-wrap">
+    <div class="match-col">
+      <div class="match-item" onclick="matchClick(this,'p1')">✏️ Pensil</div>
+      <div class="match-item" onclick="matchClick(this,'p2')">🧍‍♀️ Badanku</div>
+      <div class="match-item" onclick="matchClick(this,'p3')">🍬 Gula sebungkus</div>
+      <div class="match-item" onclick="matchClick(this,'p4')">🏫 Jarak rumah ke sekolah</div>
+    </div>
+    <div class="match-col">
+      <div class="match-item" onclick="matchClick(this,'p3')">🍬 Timbangan Dapur</div>
+      <div class="match-item" onclick="matchClick(this,'p4')">🧵 Meteran / Roda Ukur</div>
+      <div class="match-item" onclick="matchClick(this,'p1')">📏 Penggaris</div>
+      <div class="match-item" onclick="matchClick(this,'p2')">⚖️ Timbangan Badan</div>
+    </div>
+  </div>
+  <div class="guess-feedback" id="matchFb" style="min-height:1.5em;"></div>
+  `
+});
+
+/* ---------- 23. REFLEKSI: CEKLIS ---------- */
+PAGES.push({
+  navLabel:'Refleksi: Ceklis Belajarku',
+  html:`
+  ${sec('REFLEKSI','eb-refleksi')}
+  <h2>Ceklis Belajarku</h2>
+  ${nana('think','Coba centang hal-hal yang sudah kamu kuasai hari ini.','90')}
+  <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div>Aku bisa membedakan sentimeter (cm) dan meter (m)</div>
+  <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div>Aku bisa mengukur panjang benda memakai penggaris</div>
+  <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div>Aku bisa mengubah kilogram (kg) menjadi gram (g)</div>
+  <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div>Aku berani mencoba latihan soal sendiri</div>
+  `
+});
+
+/* ---------- 24. REFLEKSI: BINTANG ---------- */
+PAGES.push({
+  navLabel:'Refleksi: Bintang untukku',
+  html:`
+  ${sec('REFLEKSI','eb-refleksi')}
+  <h2>Bintang untuk Diriku</h2>
+  <p style="font-weight:700;">Seberapa percaya diri kamu tentang mengukur panjang dan berat hari ini?</p>
+  <div class="star-row">
+    <button class="star-btn" onclick="setStars(1)">⭐</button>
+    <button class="star-btn" onclick="setStars(2)">⭐</button>
+    <button class="star-btn" onclick="setStars(3)">⭐</button>
+    <button class="star-btn" onclick="setStars(4)">⭐</button>
+    <button class="star-btn" onclick="setStars(5)">⭐</button>
+  </div>
+  <p id="starMsg" style="font-weight:800;color:var(--coral);min-height:1.4em;"></p>
+  <div class="tip-box">✍️ Coba pikirkan: apa satu hal tentang pengukuran yang masih ingin kamu pelajari lagi?</div>
+  ${nana('wave','Tidak apa-apa kalau masih ada yang belum lancar, kita bisa belajar terus!','90')}
+  `
+});
+
+/* ---------- 25. PENUTUP ---------- */
+PAGES.push({
+  navLabel:'Kesimpulan & Penutup',
+  html:`
+  ${sec('PENUTUP','eb-penutup')}
+  <h2>Kesimpulan: Yuk, Ingat Lagi!</h2>
+  <div class="grid-2">
+    ${tile('📏','cm untuk benda kecil, m untuk benda besar','sky')}
+    ${tile('⚖️','g untuk benda ringan, kg untuk benda berat','mint')}
+    ${tile('🔁','100 cm = 1 m','sun')}
+    ${tile('🔁','1 kg = 1000 g','coral')}
+  </div>
+  <div class="cert">
+    <div style="font-family:'Fredoka',sans-serif;font-weight:700;color:var(--coral);font-size:1rem;">🏅 SERTIFIKAT BINTANG PENGUKUR 🏅</div>
+    <p style="margin:8px 0;">diberikan kepada</p>
+    <input type="text" placeholder="Tulis namamu di sini..." oninput="document.getElementById('certNameShow').textContent=this.value||'____________'">
+    <p id="certNameShow" style="font-weight:800;color:var(--lavender-deep);font-size:1.2rem;min-height:1.4em;"></p>
+    <p style="margin:6px 0 0;">yang telah menyelesaikan petualangan mengukur panjang dan berat bersama Nana! 🎉</p>
+  </div>
+  ${nana('celebrate','Selamat! Kamu sudah menjadi Bintang Pengukur hari ini. Sampai jumpa di petualangan berikutnya!')}
+  `
+});
+
+/* =========================================================
+   RENDER ENGINE, NAV, TAPE PROGRESS
+   ========================================================= */
+let current = 0;
+const TOTAL = PAGES.length;
+
+function renderPage(i){
+  if(i<0 || i>=TOTAL) return;
+  current = i;
+  document.getElementById('book').innerHTML = PAGES[i].html;
+  document.querySelectorAll('.kx-holder').forEach(el=>{
+    try{ katex.render(el.getAttribute('data-tex'), el, {throwOnError:false}); }catch(e){}
+  });
+  updateNav();
+  updateTape();
+  document.querySelector('.book-stage').scrollIntoView({behavior:'smooth', block:'start'});
+}
+function updateNav(){
+  document.getElementById('pageNumLbl').textContent = current+1;
+  document.getElementById('sectionLbl').textContent = PAGES[current].navLabel;
+  document.getElementById('prevBtn').disabled = current===0;
+  document.getElementById('nextBtn').disabled = current===TOTAL-1;
+  document.getElementById('nextBtn').textContent = current===TOTAL-1 ? 'Selesai 🎉' : 'Selanjutnya ▶';
+}
+function updateTape(){
+  document.getElementById('tapeFill').style.width = (current/(TOTAL-1)*100)+'%';
+  document.getElementById('tapeMarker').style.left = ((current+0.5)/TOTAL*100)+'%';
+  document.querySelectorAll('.tick').forEach((t,idx)=>{
+    t.classList.toggle('done', idx<current);
+    t.classList.toggle('current', idx===current);
+  });
+}
+function initTicks(){
+  const wrap = document.getElementById('tapeTicks');
+  let html='';
+  for(let i=0;i<TOTAL;i++){
+    const showNum = (i+1)%5===0 || i===0;
+    html += `<div class="tick" onclick="renderPage(${i})"><span>${showNum?(i+1):''}</span></div>`;
+  }
+  wrap.innerHTML = html;
+  document.getElementById('tapeMarker').innerHTML = `<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"><circle cx="100" cy="130" r="46" fill="${COLORS.coral}"/><circle cx="55" cy="70" r="20" fill="${COLORS.coral}"/><circle cx="100" cy="50" r="20" fill="${COLORS.coral}"/><circle cx="145" cy="70" r="20" fill="${COLORS.coral}"/></svg>`;
+}
+
+/* interactive helpers */
+function guessPick(el, isCorrect){
+  const row = el.closest('.compare-row');
+  row.querySelectorAll('.guess-card').forEach(c=>{
+    c.classList.remove('correct','wrong');
+    if(c.dataset.correct==='true') c.classList.add('correct');
+  });
+  if(!isCorrect) el.classList.add('wrong');
+  const fb = row.nextElementSibling;
+  if(fb && fb.classList.contains('guess-feedback')){
+    fb.textContent = isCorrect ? '✅ Tepat! Kamu jago mengamati ukuran.' : '❌ Hampir! Yang hijau itu jawabannya.';
+  }
+}
+function answerMCQ(el, isCorrect, fbId){
+  const opts = el.parentElement;
+  [...opts.children].forEach(b=>{
+    b.disabled = true;
+    if(b.dataset.correct==='true') b.classList.add('correct');
+  });
+  if(!isCorrect) el.classList.add('wrong');
+  const fb = document.getElementById(fbId);
+  if(fb) fb.textContent = isCorrect ? '✅ Benar! Kamu hebat!' : '❌ Belum tepat, lihat jawaban yang hijau ya.';
+}
+let matchSelected = null;
+function matchClick(el, key){
+  if(el.classList.contains('locked')) return;
+  if(!matchSelected){
+    matchSelected = {el, key};
+    el.classList.add('selected');
+    return;
+  }
+  if(matchSelected.el === el){
+    el.classList.remove('selected');
+    matchSelected = null;
+    return;
+  }
+  if(matchSelected.key === key){
+    matchSelected.el.classList.remove('selected');
+    matchSelected.el.classList.add('locked');
+    el.classList.add('locked');
+    matchSelected = null;
+    const locked = document.querySelectorAll('.match-item.locked').length;
+    const total = document.querySelectorAll('.match-item').length;
+    if(locked===total){
+      const fb = document.getElementById('matchFb');
+      if(fb) fb.textContent = '🎉 Semua pasangan benar! Kamu memang jago mengukur!';
+    }
+  } else {
+    el.classList.add('wrong');
+    matchSelected.el.classList.add('wrong');
+    const prev = matchSelected;
+    setTimeout(()=>{
+      el.classList.remove('wrong');
+      prev.el.classList.remove('selected','wrong');
+    }, 650);
+    matchSelected = null;
+  }
+}
+function toggleCheck(el){
+  el.classList.toggle('checked');
+  const box = el.querySelector('.check-box');
+  box.textContent = el.classList.contains('checked') ? '✓' : '';
+}
+function setStars(n){
+  document.querySelectorAll('.star-btn').forEach((s,i)=>s.classList.toggle('active', i<n));
+  const msgs = ['Yuk, ulangi lagi sedikit ya, kamu pasti bisa!','Yuk, ulangi lagi sedikit ya, kamu pasti bisa!','Bagus! Terus berlatih, ya.','Bagus! Terus berlatih, ya.','Keren sekali! Kamu bintang pengukur!'];
+  document.getElementById('starMsg').textContent = msgs[n-1];
+}
+
+/* nav buttons + keyboard */
+document.getElementById('prevBtn').addEventListener('click', ()=>renderPage(current-1));
+document.getElementById('nextBtn').addEventListener('click', ()=>renderPage(Math.min(current+1, TOTAL-1)));
+document.addEventListener('keydown', (e)=>{
+  if(e.key==='ArrowRight') renderPage(Math.min(current+1, TOTAL-1));
+  if(e.key==='ArrowLeft') renderPage(current-1);
+});
+
+/* brand + init */
+document.getElementById('brandLogo').innerHTML = bunny('wave',30) + '<span>Kebun Ukur Nana</span>';
+initTicks();
+renderPage(0);
+</script>
+</body>
+</html>

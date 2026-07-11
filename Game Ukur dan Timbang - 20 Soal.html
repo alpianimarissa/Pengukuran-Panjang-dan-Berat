@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Main Ukur & Timbang bersama Nana — 20 Soal</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Nunito:ital,wght@0,400;0,600;0,700;0,800;1,700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg1:#F3EEFF; --bg2:#E9F8F1;
+  --paper:#FFFFFF; --ink:#3D3352; --plum:#4A3B5C;
+  --lavender:#8C6FC7; --lavender-deep:#6E4FA8; --lavender-light:#E4D9F9;
+  --mint:#3FB88C; --mint-light:#CDF1E3;
+  --sky:#4AA3E0; --sky-light:#D2ECFB;
+  --coral:#FF7A5C; --coral-light:#FFDCD2;
+  --sun:#FFC94A; --sun-light:#FFEFC7;
+  --shadow:0 18px 40px -12px rgba(74,59,92,0.28);
+  --radius-lg:28px; --radius-md:18px; --radius-sm:12px;
+}
+*{box-sizing:border-box;}
+html,body{margin:0;padding:0;}
+body{
+  min-height:100vh;font-family:'Nunito',sans-serif;color:var(--ink);
+  background:
+    radial-gradient(circle at 12% 8%, #fff 0%, transparent 40%),
+    radial-gradient(circle at 90% 15%, var(--sky-light) 0%, transparent 45%),
+    radial-gradient(circle at 85% 90%, var(--mint-light) 0%, transparent 45%),
+    linear-gradient(160deg, var(--bg1) 0%, var(--bg2) 100%);
+  background-attachment:fixed;
+  display:flex;flex-direction:column;align-items:center;
+  padding:18px 14px 34px;
+}
+h1,h2,h3,.display{font-family:'Fredoka',sans-serif;}
+button{font-family:'Nunito',sans-serif;cursor:pointer;}
+
+.topbar{
+  width:100%;max-width:760px;
+  display:flex;align-items:center;justify-content:space-between;
+  margin-bottom:14px;gap:10px;flex-wrap:wrap;
+}
+.brand{
+  font-family:'Fredoka',sans-serif;font-weight:600;color:var(--lavender-deep);
+  font-size:1rem;display:flex;align-items:center;gap:8px;
+}
+.brand svg{height:30px;width:auto;}
+.score-pill{
+  background:var(--paper);border-radius:20px;padding:6px 16px;
+  font-weight:800;color:var(--plum);box-shadow:0 4px 10px rgba(74,59,92,0.12);
+  font-size:0.9rem;
+}
+.progress-wrap{width:100%;max-width:760px;margin-bottom:16px;}
+.progress-track{
+  position:relative;height:20px;border-radius:999px;
+  background:#fff;box-shadow:inset 0 2px 4px rgba(0,0,0,0.08);
+  overflow:hidden;border:2px solid var(--lavender-light);
+}
+.progress-fill{
+  height:100%;border-radius:999px;
+  background:linear-gradient(90deg,var(--mint),var(--sky));
+  transition:width .4s cubic-bezier(.4,1.4,.6,1);
+}
+.progress-text{
+  text-align:center;font-weight:800;color:var(--plum);font-size:0.85rem;margin-top:6px;
+}
+
+.stage{width:100%;max-width:760px;}
+.card{
+  position:relative;
+  background:var(--paper);border-radius:var(--radius-lg);
+  box-shadow:var(--shadow);padding:32px 34px;
+  min-height:480px;
+  animation:pop .4s ease;
+}
+@keyframes pop{from{opacity:0;transform:translateY(12px) scale(.99);}to{opacity:1;transform:translateY(0) scale(1);}}
+.card::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:10px;
+  background:linear-gradient(90deg,var(--lavender),var(--sky),var(--mint),var(--sun),var(--coral));
+  opacity:0.85;border-radius:var(--radius-lg) var(--radius-lg) 0 0;
+}
+.tag{
+  display:inline-flex;align-items:center;gap:6px;
+  font-family:'Fredoka',sans-serif;font-weight:600;font-size:0.75rem;letter-spacing:0.06em;
+  color:#fff;padding:5px 14px;border-radius:999px;margin-bottom:14px;
+}
+.tag-ruler{background:var(--sky);}
+.tag-scale{background:var(--mint);}
+
+.question-text{font-size:1.15rem;font-weight:800;color:var(--plum);margin:6px 0 18px;text-align:center;}
+.illust-box{display:flex;justify-content:center;margin-bottom:18px;}
+.opt-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;max-width:480px;margin:0 auto;}
+@media (max-width:480px){.opt-grid{grid-template-columns:1fr;}}
+.opt-btn{
+  background:#fff;border:3px solid var(--lavender-light);border-radius:16px;
+  padding:16px;font-weight:800;font-size:1.15rem;color:var(--plum);
+  transition:all .15s;
+}
+.opt-btn:hover:not(:disabled){border-color:var(--lavender);transform:translateY(-2px);}
+.opt-btn.correct{background:var(--mint-light);border-color:var(--mint);color:var(--mint);}
+.opt-btn.wrong{background:#FFE1DA;border-color:var(--coral);color:var(--coral);}
+.opt-btn:disabled{cursor:default;}
+.feedback{
+  text-align:center;font-weight:800;font-size:1.05rem;min-height:1.6em;margin:14px 0 6px;
+}
+.feedback.ok{color:var(--mint);}
+.feedback.no{color:var(--coral);}
+.next-wrap{text-align:center;margin-top:8px;}
+.next-btn{
+  background:linear-gradient(90deg,var(--lavender),var(--sky));color:#fff;
+  border:none;border-radius:999px;padding:13px 30px;font-weight:700;font-size:1rem;
+  font-family:'Fredoka',sans-serif;box-shadow:0 8px 18px rgba(74,59,92,0.25);
+  display:none;
+}
+.next-btn.show{display:inline-block;animation:pop .3s ease;}
+.next-btn:hover{transform:translateY(-2px);}
+
+.start-screen, .end-screen{text-align:center;}
+.big-btn{
+  background:linear-gradient(90deg,var(--coral),var(--sun));color:var(--plum);
+  border:none;border-radius:999px;padding:16px 34px;font-weight:700;font-size:1.1rem;
+  font-family:'Fredoka',sans-serif;box-shadow:0 10px 22px rgba(255,122,92,0.35);
+  margin-top:14px;
+}
+.big-btn:hover{transform:translateY(-2px);}
+.instr-list{list-style:none;padding:0;margin:18px auto;max-width:420px;text-align:left;display:flex;flex-direction:column;gap:10px;}
+.instr-list li{
+  background:var(--mint-light);border-radius:14px;padding:12px 16px;font-weight:700;color:var(--plum);
+  display:flex;gap:10px;align-items:center;
+}
+.star-final{font-size:3rem;margin:8px 4px;filter:grayscale(1) opacity(0.35);}
+.star-final.active{filter:none;}
+.floaty{position:absolute;opacity:0.5;pointer-events:none;}
+@keyframes floatY{0%,100%{transform:translateY(0);}50%{transform:translateY(-10px);}}
+.floaty{animation:floatY 4s ease-in-out infinite;}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="brand" id="brandLogo"></div>
+  <div class="score-pill">⭐ Skor: <span id="scoreLbl">0</span> / 20</div>
+</div>
+
+<div class="progress-wrap">
+  <div class="progress-track"><div class="progress-fill" id="progFill" style="width:0%"></div></div>
+  <div class="progress-text" id="progText">Bersiap...</div>
+</div>
+
+<div class="stage">
+  <div class="card" id="card"></div>
+</div>
+
+<script>
+const COLORS = {lav:'#8C6FC7',lavD:'#6E4FA8',mint:'#3FB88C',sky:'#4AA3E0',coral:'#FF7A5C',sun:'#FFC94A',plum:'#4A3B5C'};
+
+/* ---- Bunny mascot (reused from Kebun Ukur Nana) ---- */
+function bunny(pose='wave', size=140){
+  const defs = `
+  <defs>
+    <linearGradient id="bBody" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#FFFFFF"/><stop offset="100%" stop-color="#F0E6FF"/>
+    </linearGradient>
+    <linearGradient id="bEar" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#FFFFFF"/><stop offset="100%" stop-color="#E6D6FA"/>
+    </linearGradient>
+    <radialGradient id="bCheek" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#FFB6A3"/><stop offset="100%" stop-color="#FFB6A3" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="bShadow" x="-50%" y="-50%" width="200%" height="200%">
+      <feDropShadow dx="0" dy="6" stdDeviation="6" flood-color="#4A3B5C" flood-opacity="0.25"/>
+    </filter>
+  </defs>`;
+  const ears = `
+    <ellipse cx="72" cy="42" rx="16" ry="40" fill="url(#bEar)" transform="rotate(-12 72 42)" stroke="#D9C4F2" stroke-width="2"/>
+    <ellipse cx="128" cy="42" rx="16" ry="40" fill="url(#bEar)" transform="rotate(12 128 42)" stroke="#D9C4F2" stroke-width="2"/>
+    <ellipse cx="72" cy="46" rx="7" ry="26" fill="#FFD9EC" transform="rotate(-12 72 46)"/>
+    <ellipse cx="128" cy="46" rx="7" ry="26" fill="#FFD9EC" transform="rotate(12 128 46)"/>`;
+  const head = `<ellipse cx="100" cy="120" rx="58" ry="54" fill="url(#bBody)" stroke="#D9C4F2" stroke-width="2.5"/>`;
+  const cheeks = `<circle cx="72" cy="128" r="12" fill="url(#bCheek)"/><circle cx="128" cy="128" r="12" fill="url(#bCheek)"/>`;
+  let face='', arms='';
+  if(pose==='wave'){
+    face = eyesFace('happy');
+    arms = `<path d="M148 130 Q178 110 172 78" stroke="#F0E6FF" stroke-width="16" stroke-linecap="round" fill="none"/>
+            <circle cx="172" cy="76" r="11" fill="url(#bBody)" stroke="#D9C4F2" stroke-width="2"/>
+            <path d="M52 130 Q40 150 52 165" stroke="#F0E6FF" stroke-width="16" stroke-linecap="round" fill="none"/>`;
+  } else if(pose==='think'){
+    face = eyesFace('think');
+    arms = `<path d="M140 118 Q128 90 108 84" stroke="#F0E6FF" stroke-width="16" stroke-linecap="round" fill="none"/>
+            <path d="M60 130 Q46 150 58 164" stroke="#F0E6FF" stroke-width="16" stroke-linecap="round" fill="none"/>`;
+  } else if(pose==='celebrate'){
+    face = eyesFace('star');
+    arms = `<path d="M150 126 Q182 100 178 66" stroke="#F0E6FF" stroke-width="16" stroke-linecap="round" fill="none"/>
+            <path d="M50 126 Q18 100 22 66" stroke="#F0E6FF" stroke-width="16" stroke-linecap="round" fill="none"/>
+            <circle cx="178" cy="64" r="10" fill="url(#bBody)" stroke="#D9C4F2" stroke-width="2"/>
+            <circle cx="22" cy="64" r="10" fill="url(#bBody)" stroke="#D9C4F2" stroke-width="2"/>`;
+  } else {
+    face = eyesFace('happy');
+    arms = `<path d="M148 130 Q172 122 178 104" stroke="#F0E6FF" stroke-width="16" stroke-linecap="round" fill="none"/>
+            <path d="M52 130 Q34 128 24 112" stroke="#F0E6FF" stroke-width="16" stroke-linecap="round" fill="none"/>`;
+  }
+  const nose = `<path d="M94 138 Q100 144 106 138 Q100 148 94 138Z" fill="#C77B9E"/>`;
+  const body = `${ears}${head}${cheeks}${face}${nose}${arms}`;
+  return `<svg viewBox="0 0 200 200" width="${size}" style="max-width:100%;height:auto;overflow:visible;filter:url(#bShadow)" xmlns="http://www.w3.org/2000/svg">${defs}${body}</svg>`;
+}
+function eyesFace(kind){
+  if(kind==='happy') return `<circle cx="82" cy="112" r="6.5" fill="${COLORS.plum}"/><circle cx="118" cy="112" r="6.5" fill="${COLORS.plum}"/>
+    <circle cx="84" cy="109" r="2" fill="#fff"/><circle cx="120" cy="109" r="2" fill="#fff"/>`;
+  if(kind==='think') return `<path d="M76 112 q6 -6 12 0" stroke="${COLORS.plum}" stroke-width="3.5" fill="none" stroke-linecap="round"/>
+    <circle cx="118" cy="112" r="6.5" fill="${COLORS.plum}"/><circle cx="120" cy="109" r="2" fill="#fff"/>`;
+  if(kind==='star') return `<path d="M82 106l3 6 6 1-4.5 4 1 6-5.5-3-5.5 3 1-6-4.5-4 6-1z" fill="${COLORS.sun}"/>
+    <path d="M118 106l3 6 6 1-4.5 4 1 6-5.5-3-5.5 3 1-6-4.5-4 6-1z" fill="${COLORS.sun}"/>`;
+  return '';
+}
+
+/* ---- Ruler-reading illustration (no number label — the challenge!) ---- */
+function rulerQuiz(maxCm, startCm, endCm, width=340){
+  const startX=20, endX=310, top=22;
+  const scale=(endX-startX)/maxCm;
+  let ticks='';
+  for(let i=0;i<=maxCm;i++){
+    const x=startX+i*scale;
+    const tall = i%5===0;
+    ticks += `<line x1="${x}" y1="${top}" x2="${x}" y2="${top+(tall?22:12)}" stroke="${COLORS.plum}" stroke-width="${tall?2:1}"/>`;
+    if(tall) ticks += `<text x="${x}" y="${top+34}" font-size="11" font-weight="800" fill="${COLORS.plum}" text-anchor="middle" font-family="Nunito">${i}</text>`;
+  }
+  const barX = startX+startCm*scale;
+  const barW = (endCm-startCm)*scale;
+  const bar = `
+   <rect x="${barX}" y="${top-1}" width="${barW}" height="15" rx="7" fill="${COLORS.coral}" opacity="0.7"/>
+   <line x1="${barX}" y1="${top-10}" x2="${barX}" y2="${top+42}" stroke="${COLORS.coral}" stroke-width="2" stroke-dasharray="3,3"/>
+   <line x1="${barX+barW}" y1="${top-10}" x2="${barX+barW}" y2="${top+42}" stroke="${COLORS.coral}" stroke-width="2" stroke-dasharray="3,3"/>`;
+  return `<svg viewBox="0 0 330 92" width="${width}" style="max-width:100%;height:auto" xmlns="http://www.w3.org/2000/svg">
+   <defs><filter id="rqShadow"><feDropShadow dx="0" dy="4" stdDeviation="4" flood-color="#4A3B5C" flood-opacity="0.2"/></filter></defs>
+   <g filter="url(#rqShadow)">
+     <rect x="10" y="10" width="310" height="68" rx="10" fill="#FFFDF3" stroke="#E9D9A0" stroke-width="2"/>
+     ${bar}
+     ${ticks}
+   </g>
+  </svg>`;
+}
+
+/* ---- Analog gauge dial (timbangan jarum) ---- */
+function gaugeDial(maxVal, minorStep, majorStep, value, unitLabel, width=260){
+  const cx=130, cy=130, r=96;
+  function pt(v, radius){
+    const theta = Math.PI - (v/maxVal)*Math.PI;
+    return {x: cx+radius*Math.cos(theta), y: cy-radius*Math.sin(theta)};
+  }
+  let ticks='';
+  for(let v=0; v<=maxVal; v+=minorStep){
+    const isMajor = (Math.round(v*100) % Math.round(majorStep*100) === 0);
+    const p1 = pt(v, r);
+    const p2 = pt(v, isMajor? r-15 : r-8);
+    ticks += `<line x1="${p1.x.toFixed(1)}" y1="${p1.y.toFixed(1)}" x2="${p2.x.toFixed(1)}" y2="${p2.y.toFixed(1)}" stroke="${COLORS.plum}" stroke-width="${isMajor?3:1.5}"/>`;
+    if(isMajor){
+      const lp = pt(v, r-32);
+      ticks += `<text x="${lp.x.toFixed(1)}" y="${(lp.y+4).toFixed(1)}" font-size="13" font-weight="800" fill="${COLORS.plum}" text-anchor="middle" font-family="Nunito">${v}</text>`;
+    }
+  }
+  const tip = pt(value, r-22);
+  const needle = `<line x1="${cx}" y1="${cy}" x2="${tip.x.toFixed(1)}" y2="${tip.y.toFixed(1)}" stroke="${COLORS.coral}" stroke-width="5" stroke-linecap="round"/>
+    <circle cx="${cx}" cy="${cy}" r="10" fill="${COLORS.coral}" stroke="#fff" stroke-width="2"/>`;
+  return `<svg viewBox="0 0 260 200" width="${width}" style="max-width:100%;height:auto" xmlns="http://www.w3.org/2000/svg">
+    <defs><filter id="gShadow"><feDropShadow dx="0" dy="5" stdDeviation="5" flood-color="#4A3B5C" flood-opacity="0.25"/></filter></defs>
+    <g filter="url(#gShadow)">
+      <path d="M ${cx-r-16} ${cy} A ${r+16} ${r+16} 0 0 1 ${cx+r+16} ${cy}" fill="#FFFDF3" stroke="#E9D9A0" stroke-width="2"/>
+      <line x1="${cx-r-16}" y1="${cy}" x2="${cx+r+16}" y2="${cy}" stroke="#E9D9A0" stroke-width="2"/>
+      ${ticks}
+      ${needle}
+      <rect x="${cx-46}" y="${cy+14}" width="92" height="32" rx="10" fill="${COLORS.mint}"/>
+      <text x="${cx}" y="${cy+35}" font-size="15" font-weight="800" fill="#fff" text-anchor="middle" font-family="Fredoka">${unitLabel}</text>
+    </g>
+  </svg>`;
+}
+
+/* =========================================================
+   20 SOAL — membaca skala penggaris & timbangan
+   ========================================================= */
+function choicesAround(correct, deltas){
+  let cand = deltas.map(d=>correct+d).filter(v=>v>=0 && v!==correct);
+  cand = [...new Set(cand)].slice(0,3);
+  let opts = [...cand, correct];
+  for(let i=opts.length-1;i>0;i--){
+    const j = Math.floor(Math.random()*(i+1));
+    [opts[i],opts[j]] = [opts[j],opts[i]];
+  }
+  return opts;
+}
+
+const QUESTIONS = [
+  // ---- Membaca penggaris (1-10) ----
+  {type:'ruler', max:20, start:0, end:5,  unit:'cm', q:'Sebuah penghapus diletakkan di penggaris seperti gambar. Berapa cm panjangnya?', choices:choicesAround(5,[-2,-1,1,2])},
+  {type:'ruler', max:20, start:0, end:8,  unit:'cm', q:'Berapa cm panjang pita ini?', choices:choicesAround(8,[-2,-1,1,2])},
+  {type:'ruler', max:20, start:0, end:12, unit:'cm', q:'Berapa cm panjang sedotan ini?', choices:choicesAround(12,[-2,-1,1,2])},
+  {type:'ruler', max:20, start:0, end:15, unit:'cm', q:'Berapa cm panjang batang korek api ini?', choices:choicesAround(15,[-2,-1,1,3])},
+  {type:'ruler', max:20, start:0, end:3,  unit:'cm', q:'Berapa cm panjang klip kertas ini?', choices:choicesAround(3,[-1,1,2,3])},
+  {type:'ruler', max:20, start:2, end:9,  unit:'cm', q:'Ujung pensil ini tidak mulai dari angka 0. Berapa cm panjangnya?', choices:choicesAround(7,[-2,-1,1,2])},
+  {type:'ruler', max:20, start:1, end:10, unit:'cm', q:'Berapa cm panjang benang ini? (perhatikan, mulainya bukan dari 0)', choices:choicesAround(9,[-2,-1,1,2])},
+  {type:'ruler', max:20, start:0, end:20, unit:'cm', q:'Berapa cm panjang penggaris kecil ini?', choices:choicesAround(20,[-3,-2,-1,1])},
+  {type:'ruler', max:20, start:3, end:11, unit:'cm', q:'Berapa cm panjang crayon ini? (perhatikan awalnya di angka 3)', choices:choicesAround(8,[-2,-1,1,2])},
+  {type:'ruler', max:20, start:0, end:6,  unit:'cm', q:'Berapa cm panjang kancing baju yang dijajarkan ini?', choices:choicesAround(6,[-2,-1,1,2])},
+
+  // ---- Membaca timbangan jarum: kilogram (11-15) ----
+  {type:'gauge', max:10, minor:1, major:2, value:4,  unit:'kg', q:'Jarum timbangan menunjuk ke angka ini. Berapa kg beratnya?', choices:choicesAround(4,[-2,-1,1,2])},
+  {type:'gauge', max:10, minor:1, major:2, value:7,  unit:'kg', q:'Berapa kg berat karung beras ini? Coba hitung dari angka terdekat.', choices:choicesAround(7,[-2,-1,1,2])},
+  {type:'gauge', max:10, minor:1, major:2, value:9,  unit:'kg', q:'Berapa kg berat benda ini?', choices:choicesAround(9,[-2,-1,1,2])},
+  {type:'gauge', max:10, minor:1, major:2, value:3,  unit:'kg', q:'Berapa kg berat semangka ini?', choices:choicesAround(3,[-2,-1,1,2])},
+  {type:'gauge', max:10, minor:1, major:2, value:10, unit:'kg', q:'Jarum menunjuk paling ujung kanan. Berapa kg beratnya?', choices:choicesAround(10,[-3,-2,-1,1])},
+
+  // ---- Membaca timbangan jarum: gram (16-20) ----
+  {type:'gauge', max:1000, minor:100, major:200, value:200, unit:'gram', q:'Berapa gram berat gula ini?', choices:choicesAround(200,[-100,-100,100,200])},
+  {type:'gauge', max:1000, minor:100, major:200, value:500, unit:'gram', q:'Jarum ada tepat di tengah dua angka. Berapa gram beratnya?', choices:choicesAround(500,[-200,-100,100,200])},
+  {type:'gauge', max:1000, minor:100, major:200, value:700, unit:'gram', q:'Berapa gram berat tepung ini?', choices:choicesAround(700,[-200,-100,100,200])},
+  {type:'gauge', max:1000, minor:100, major:200, value:900, unit:'gram', q:'Berapa gram berat cokelat ini?', choices:choicesAround(900,[-200,-100,100,200])},
+  {type:'gauge', max:1000, minor:100, major:200, value:300, unit:'gram', q:'Berapa gram berat kacang ini?', choices:choicesAround(300,[-200,-100,100,200])},
+];
+const TOTAL = QUESTIONS.length;
+
+/* =========================================================
+   GAME ENGINE
+   ========================================================= */
+let current = -1;
+let score = 0;
+let answered = false;
+
+function renderIllust(qq){
+  if(qq.type==='ruler') return rulerQuiz(qq.max, qq.start, qq.end);
+  return gaugeDial(qq.max, qq.minor, qq.major, qq.value, qq.unit);
+}
+
+function renderStart(){
+  document.getElementById('progText').textContent = 'Bersiap...';
+  document.getElementById('progFill').style.width='0%';
+  document.getElementById('card').innerHTML = `
+  <div class="start-screen">
+    <div style="margin-bottom:10px;">${bunny('wave',150)}</div>
+    <h2 style="color:var(--lavender-deep);font-size:1.7rem;margin-bottom:4px;">Main Ukur &amp; Timbang bersama Nana</h2>
+    <p style="font-weight:700;color:var(--coral);margin-top:0;">20 soal membaca skala penggaris &amp; timbangan</p>
+    <ul class="instr-list">
+      <li>📏 Perhatikan angka pada penggaris, lalu hitung berapa cm panjang bendanya.</li>
+      <li>⚖️ Perhatikan jarum pada timbangan, lalu tebak angka yang ditunjuknya.</li>
+      <li>⭐ Jawab semua soal untuk mengumpulkan bintang sebanyak-banyaknya!</li>
+    </ul>
+    <button class="big-btn" onclick="startGame()">Mulai Main! 🚀</button>
+  </div>
+  <div class="floaty" style="top:20px;left:20px;font-size:1.5rem;">☁️</div>
+  <div class="floaty" style="top:36px;right:26px;font-size:1.3rem;animation-delay:1s;">⭐</div>
+  `;
+}
+
+function startGame(){
+  score = 0;
+  updateScorePill();
+  renderQuestion(0);
+}
+
+function renderQuestion(i){
+  current = i;
+  answered = false;
+  const qq = QUESTIONS[i];
+  const tagClass = qq.type==='ruler' ? 'tag-ruler' : 'tag-scale';
+  const tagText = qq.type==='ruler' ? '📏 BACA PENGGARIS' : '⚖️ BACA TIMBANGAN';
+
+  const optsHtml = qq.choices.map(c=>
+    `<button class="opt-btn" data-val="${c}" onclick="pickAnswer(this)">${c} ${qq.unit}</button>`
+  ).join('');
+
+  document.getElementById('card').innerHTML = `
+    <span class="tag ${tagClass}">${tagText}</span>
+    <div class="question-text">${qq.q}</div>
+    <div class="illust-box">${renderIllust(qq)}</div>
+    <div class="opt-grid">${optsHtml}</div>
+    <div class="feedback" id="feedback"></div>
+    <div class="next-wrap"><button class="next-btn" id="nextBtn" onclick="goNext()">Lanjut ▶</button></div>
+  `;
+  document.getElementById('progFill').style.width = ((i)/TOTAL*100)+'%';
+  document.getElementById('progText').textContent = `Soal ${i+1} dari ${TOTAL}`;
+}
+
+function pickAnswer(el){
+  if(answered) return;
+  answered = true;
+  const qq = QUESTIONS[current];
+  const val = Number(el.getAttribute('data-val'));
+  const correct = qq.type==='ruler' ? (qq.end-qq.start) : qq.value;
+  const isCorrect = val===correct;
+
+  document.querySelectorAll('.opt-btn').forEach(b=>{
+    b.disabled = true;
+    if(Number(b.getAttribute('data-val'))===correct) b.classList.add('correct');
+  });
+  if(!isCorrect) el.classList.add('wrong');
+
+  const fb = document.getElementById('feedback');
+  if(isCorrect){
+    score++;
+    updateScorePill();
+    fb.textContent = '✅ Benar sekali! Kamu jago membaca skala!';
+    fb.className = 'feedback ok';
+  } else {
+    fb.textContent = `❌ Belum tepat. Jawaban yang benar adalah ${correct} ${qq.unit}.`;
+    fb.className = 'feedback no';
+  }
+  document.getElementById('progFill').style.width = ((current+1)/TOTAL*100)+'%';
+  document.getElementById('nextBtn').classList.add('show');
+}
+
+function goNext(){
+  if(current+1 < TOTAL){
+    renderQuestion(current+1);
+  } else {
+    renderEnd();
+  }
+}
+
+function updateScorePill(){
+  document.getElementById('scoreLbl').textContent = score;
+}
+
+function renderEnd(){
+  document.getElementById('progText').textContent = 'Selesai!';
+  document.getElementById('progFill').style.width = '100%';
+  const pct = score/TOTAL;
+  const stars = pct>=0.9 ? 5 : pct>=0.7 ? 4 : pct>=0.5 ? 3 : pct>=0.3 ? 2 : 1;
+  const msg = stars>=5 ? 'Luar biasa! Kamu Bintang Pengukur sejati!' :
+              stars>=4 ? 'Keren banget! Sedikit lagi sempurna!' :
+              stars>=3 ? 'Bagus! Terus berlatih membaca skalanya, ya.' :
+              'Tidak apa-apa, yuk coba lagi supaya makin lancar!';
+  let starsHtml='';
+  for(let i=1;i<=5;i++){
+    starsHtml += `<span class="star-final ${i<=stars?'active':''}">⭐</span>`;
+  }
+  document.getElementById('card').innerHTML = `
+  <div class="end-screen">
+    <div style="margin-bottom:6px;">${bunny(stars>=3?'celebrate':'think',150)}</div>
+    <h2 style="color:var(--lavender-deep);">Permainan Selesai!</h2>
+    <p style="font-weight:800;font-size:1.3rem;color:var(--coral);margin:4px 0;">Skor kamu: ${score} / ${TOTAL}</p>
+    <div>${starsHtml}</div>
+    <p style="font-weight:700;color:var(--plum);max-width:400px;margin:12px auto;">${msg}</p>
+    <button class="big-btn" onclick="renderStart()">Main Lagi 🔁</button>
+  </div>
+  `;
+}
+
+/* init */
+document.getElementById('brandLogo').innerHTML = bunny('wave',34) + '<span>Kebun Ukur Nana</span>';
+renderStart();
+</script>
+</body>
+</html>
