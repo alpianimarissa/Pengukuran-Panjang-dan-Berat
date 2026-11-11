@@ -1,0 +1,778 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Petualangan Konversi Satuan Panjang - Kelas 3 SD</title>
+    <!-- Tailwind CSS untuk Styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome untuk Ikon -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts: Comic Neue & Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Comic+Neue:wght@400;700&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <!-- Font Style Custom -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc;
+        }
+        h1, h2, h3, h4 {
+            font-family: 'Comic Neue', cursive;
+        }
+        /* Custom styling for realistic stair visual */
+        .stair-step {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .stair-step:hover {
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 8px 15px -3px rgba(0, 0, 0, 0.15);
+        }
+        .stair-shadow {
+            box-shadow: inset 0 -4px 0 rgba(0,0,0,0.2), 0 4px 6px -1px rgba(0,0,0,0.1);
+        }
+        .bounce-slow {
+            animation: bounce 2s infinite;
+        }
+        @keyframes bounce {
+            0%, 100% { transform: translateY(-5%); }
+            50% { transform: translateY(0); }
+        }
+    </style>
+</head>
+<body class="min-h-screen text-slate-800 pb-12">
+
+    <!-- Header / Navbar Navigasi -->
+    <header class="bg-teal-600 text-white shadow-lg sticky top-0 z-50">
+        <div class="max-w-4xl mx-auto px-4 py-3 flex justify-between items-center">
+            <div class="flex items-center gap-2">
+                <i class="fa-solid fa-ruler-combined text-amber-300 text-2xl"></i>
+                <h1 class="font-bold text-xl md:text-2xl tracking-wide">Petualangan Matematika</h1>
+            </div>
+            <span class="bg-teal-700 px-3 py-1 rounded-full text-xs md:text-sm font-semibold border border-teal-400">
+                Kelas 3 SD
+            </span>
+        </div>
+    </header>
+
+    <main class="max-w-4xl mx-auto px-4 mt-6 space-y-8">
+
+        <!-- BANNER UTAMA -->
+        <div class="bg-gradient-to-r from-teal-500 to-emerald-500 rounded-2xl p-6 text-white shadow-md relative overflow-hidden">
+            <div class="relative z-10">
+                <span class="bg-amber-400 text-slate-900 font-bold px-3 py-1 rounded-full text-xs uppercase tracking-wider">Modul Interaktif</span>
+                <h2 class="text-2xl md:text-3xl font-extrabold mt-2">Dunia Konversi Satuan Panjang 📏</h2>
+                <p class="mt-2 text-teal-100 text-sm md:text-base">Ayo bantu Dito dan Kiki menyelesaikan petualangan soal cerita!</p>
+            </div>
+            <i class="fa-solid fa-compass absolute -right-6 -bottom-6 text-9xl opacity-20 text-white"></i>
+        </div>
+
+        <!-- SEKSI 1: TUJUAN PEMBELAJARAN -->
+        <section class="bg-white rounded-2xl p-6 shadow-sm border-2 border-teal-100">
+            <div class="flex items-center gap-3 mb-4">
+                <div class="bg-amber-100 p-3 rounded-xl text-amber-600">
+                    <i class="fa-solid fa-bullseye text-2xl"></i>
+                </div>
+                <div>
+                    <h3 class="text-xl font-bold text-teal-800">1. Tujuan Pembelajaran Hari Ini</h3>
+                    <p class="text-xs text-slate-500">Apa yang bakal kita kuasai bersama?</p>
+                </div>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="flex items-start gap-3 bg-teal-50/50 p-3 rounded-xl border border-teal-100">
+                    <i class="fa-solid fa-circle-check text-teal-600 mt-1"></i>
+                    <p class="text-sm">Memahami seluruh tangga satuan panjang (<strong>KM, HM, DAM, M, DM, CM, MM</strong>).</p>
+                </div>
+                <div class="flex items-start gap-3 bg-teal-50/50 p-3 rounded-xl border border-teal-100">
+                    <i class="fa-solid fa-circle-check text-teal-600 mt-1"></i>
+                    <p class="text-sm">Mengubah (konversi) antar satuan panjang dari yang lebih besar ke lebih kecil dan sebaliknya.</p>
+                </div>
+                <div class="flex items-start gap-3 bg-teal-50/50 p-3 rounded-xl border border-teal-100">
+                    <i class="fa-solid fa-circle-check text-teal-600 mt-1"></i>
+                    <p class="text-sm">Mengecek pemahaman lewat <strong>soal cerita</strong> kehidupan sehari-hari secara mandiri.</p>
+                </div>
+                <div class="flex items-start gap-3 bg-teal-50/50 p-3 rounded-xl border border-teal-100">
+                    <i class="fa-solid fa-circle-check text-teal-600 mt-1"></i>
+                    <p class="text-sm">Menyelesaikan tantangan gabungan berbagai satuan (contoh: hm, dam, dm, mm).</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- SEKSI 2: WARM-UP (4 SOAL REVIU SIKAT) -->
+        <section class="bg-white rounded-2xl p-6 shadow-sm border-2 border-amber-100">
+            <div class="flex items-center justify-between mb-4">
+                <div class="flex items-center gap-3">
+                    <div class="bg-amber-400 p-3 rounded-xl text-white">
+                        <i class="fa-solid fa-fire text-2xl"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-bold text-slate-800">2. Pemanasan (Warm-Up 4 Soal Beragam Satuan)</h3>
+                        <p class="text-xs text-slate-500">Uji pengetahuanmu untuk berbagai satuan panjang!</p>
+                    </div>
+                </div>
+                <span id="warmup-score" class="text-sm font-bold bg-amber-100 text-amber-800 px-3 py-1 rounded-full">
+                    Skor: 0 / 4
+                </span>
+            </div>
+
+            <!-- Container Soal Warm Up -->
+            <div class="space-y-6" id="warmup-container">
+                <!-- Soal 1 -->
+                <div class="bg-slate-50 p-4 rounded-xl border border-slate-200" id="wu-card-1">
+                    <p class="font-bold text-sm text-slate-700 mb-2">
+                        1. Paman memotong bambu sepanjang <strong>3 dekameter (dam)</strong>. Jika diubah ke meter (m), berapa panjang bambu Paman?
+                    </p>
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-2">
+                        <button onclick="checkWarmup(1, 3, false, this)" class="wu-opt-1 bg-white hover:bg-amber-50 border p-2 rounded-lg text-sm font-semibold transition">3 m</button>
+                        <button onclick="checkWarmup(1, 30, true, this)" class="wu-opt-1 bg-white hover:bg-amber-50 border p-2 rounded-lg text-sm font-semibold transition">30 m</button>
+                        <button onclick="checkWarmup(1, 300, false, this)" class="wu-opt-1 bg-white hover:bg-amber-50 border p-2 rounded-lg text-sm font-semibold transition">300 m</button>
+                        <button onclick="checkWarmup(1, 3000, false, this)" class="wu-opt-1 bg-white hover:bg-amber-50 border p-2 rounded-lg text-sm font-semibold transition">3.000 m</button>
+                    </div>
+                    <div id="wu-fb-1" class="hidden mt-2 text-xs font-bold"></div>
+                </div>
+
+                <!-- Soal 2 -->
+                <div class="bg-slate-50 p-4 rounded-xl border border-slate-200" id="wu-card-2">
+                    <p class="font-bold text-sm text-slate-700 mb-2">
+                        2. Seekor semut berjalan sejauh <strong>50 milimeter (mm)</strong> di atas meja. Berapa sentimeter (cm) jarak yang ditempuh semut?
+                    </p>
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-2">
+                        <button onclick="checkWarmup(2, 5, true, this)" class="wu-opt-2 bg-white hover:bg-amber-50 border p-2 rounded-lg text-sm font-semibold transition">5 cm</button>
+                        <button onclick="checkWarmup(2, 50, false, this)" class="wu-opt-2 bg-white hover:bg-amber-50 border p-2 rounded-lg text-sm font-semibold transition">50 cm</button>
+                        <button onclick="checkWarmup(2, 500, false, this)" class="wu-opt-2 bg-white hover:bg-amber-50 border p-2 rounded-lg text-sm font-semibold transition">500 cm</button>
+                        <button onclick="checkWarmup(2, 5000, false, this)" class="wu-opt-2 bg-white hover:bg-amber-50 border p-2 rounded-lg text-sm font-semibold transition">5.000 cm</button>
+                    </div>
+                    <div id="wu-fb-2" class="hidden mt-2 text-xs font-bold"></div>
+                </div>
+
+                <!-- Soal 3 -->
+                <div class="bg-slate-50 p-4 rounded-xl border border-slate-200" id="wu-card-3">
+                    <p class="font-bold text-sm text-slate-700 mb-2">
+                        3. Kebun kelapa milik Kakek lebarnya <strong>2 hektometer (hm)</strong>. Berapa meter (m) lebar kebun Kakek?
+                    </p>
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-2">
+                        <button onclick="checkWarmup(3, 20, false, this)" class="wu-opt-3 bg-white hover:bg-amber-50 border p-2 rounded-lg text-sm font-semibold transition">20 m</button>
+                        <button onclick="checkWarmup(3, 200, true, this)" class="wu-opt-3 bg-white hover:bg-amber-50 border p-2 rounded-lg text-sm font-semibold transition">200 m</button>
+                        <button onclick="checkWarmup(3, 2000, false, this)" class="wu-opt-3 bg-white hover:bg-amber-50 border p-2 rounded-lg text-sm font-semibold transition">2.000 m</button>
+                        <button onclick="checkWarmup(3, 20000, false, this)" class="wu-opt-3 bg-white hover:bg-amber-50 border p-2 rounded-lg text-sm font-semibold transition">20.000 m</button>
+                    </div>
+                    <div id="wu-fb-3" class="hidden mt-2 text-xs font-bold"></div>
+                </div>
+
+                <!-- Soal 4 -->
+                <div class="bg-slate-50 p-4 rounded-xl border border-slate-200" id="wu-card-4">
+                    <p class="font-bold text-sm text-slate-700 mb-2">
+                        4. Dito mengukur panjang krayon yaitu <strong>80 desimeter (dm)</strong> (krayon raksasa pameran). Berapa meter (m) panjang krayon tersebut?
+                    </p>
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-2">
+                        <button onclick="checkWarmup(4, 8, true, this)" class="wu-opt-4 bg-white hover:bg-amber-50 border p-2 rounded-lg text-sm font-semibold transition">8 m</button>
+                        <button onclick="checkWarmup(4, 80, false, this)" class="wu-opt-4 bg-white hover:bg-amber-50 border p-2 rounded-lg text-sm font-semibold transition">80 m</button>
+                        <button onclick="checkWarmup(4, 800, false, this)" class="wu-opt-4 bg-white hover:bg-amber-50 border p-2 rounded-lg text-sm font-semibold transition">800 m</button>
+                        <button onclick="checkWarmup(4, 8000, false, this)" class="wu-opt-4 bg-white hover:bg-amber-50 border p-2 rounded-lg text-sm font-semibold transition">8.000 m</button>
+                    </div>
+                    <div id="wu-fb-4" class="hidden mt-2 text-xs font-bold"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SEKSI 3: KONEKSI NYATA -->
+        <section class="bg-white rounded-2xl p-6 shadow-sm border-2 border-blue-100">
+            <div class="flex items-center gap-3 mb-4">
+                <div class="bg-blue-500 p-3 rounded-xl text-white">
+                    <i class="fa-solid fa-globe text-2xl"></i>
+                </div>
+                <div>
+                    <h3 class="text-xl font-bold text-slate-800">3. Koneksi Dunia Nyata</h3>
+                    <p class="text-xs text-slate-500">Di mana saja satuan-satuan ini digunakan?</p>
+                </div>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div class="bg-blue-50/50 p-4 rounded-xl border border-blue-100 text-center">
+                    <div class="text-3xl mb-2">🚗</div>
+                    <h4 class="font-bold text-blue-900 text-sm mb-1">KM & HM (Sangat Jauh)</h4>
+                    <p class="text-xs text-slate-600">Digunakan untuk mengukur jarak antarkota atau panjang jalan tol.</p>
+                </div>
+                <div class="bg-blue-50/50 p-4 rounded-xl border border-blue-100 text-center">
+                    <div class="text-3xl mb-2">🏡</div>
+                    <h4 class="font-bold text-blue-900 text-sm mb-1">DAM, M, & DM (Sedang)</h4>
+                    <p class="text-xs text-slate-600">Digunakan mengukur lapangan sekolah, tinggi pohon, atau lebar ruangan.</p>
+                </div>
+                <div class="bg-blue-50/50 p-4 rounded-xl border border-blue-100 text-center">
+                    <div class="text-3xl mb-2">✏️</div>
+                    <h4 class="font-bold text-blue-900 text-sm mb-1">CM & MM (Kecil/Pendek)</h4>
+                    <p class="text-xs text-slate-600">Digunakan mengukur buku tulis, pensil, ketebalan koin, atau serangga.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- SEKSI 4: MATERI LENGKAP & TANGGA KONVERSI INTERAKTIF -->
+        <section class="bg-white rounded-2xl p-6 shadow-sm border-2 border-emerald-100">
+            <div class="flex items-center gap-3 mb-4">
+                <div class="bg-emerald-500 p-3 rounded-xl text-white">
+                    <i class="fa-solid fa-stairs text-2xl"></i>
+                </div>
+                <div>
+                    <h3 class="text-xl font-bold text-slate-800">4. Materi Lengkap: Tangga Satuan Panjang</h3>
+                    <p class="text-xs text-slate-500">Klik setiap anak tangga untuk melihat penjelasan dan contohnya!</p>
+                </div>
+            </div>
+
+            <!-- Visual Ilustrasi Tangga Nyata Interaktif -->
+            <div class="bg-gradient-to-br from-emerald-50 via-teal-50 to-sky-50 p-6 rounded-2xl border-2 border-emerald-200 mb-6 shadow-inner relative overflow-hidden">
+                <!-- Hiasan Awan Background -->
+                <div class="absolute top-2 right-4 text-emerald-200/50 text-6xl select-none"><i class="fa-solid fa-cloud"></i></div>
+                <div class="absolute bottom-2 left-4 text-teal-200/50 text-5xl select-none"><i class="fa-solid fa-cloud"></i></div>
+
+                <div class="flex flex-col lg:flex-row items-center justify-between gap-8 relative z-10">
+                    
+                    <!-- Kiri: Ilustrasi Visual Tangga Bertingkat Realistis -->
+                    <div class="w-full lg:w-3/5 flex flex-col space-y-1.5 py-2">
+                        <div class="text-xs font-bold text-teal-800 mb-1 flex items-center gap-2">
+                            <span class="bg-teal-200 text-teal-900 px-2.5 py-0.5 rounded-full">Petunjuk Tangga</span>
+                            <span>Turun = Dikali 10 (x10) ⬇️ | Naik = Dibagi 10 (:10) ⬆️</span>
+                        </div>
+
+                        <!-- Step 1: KM -->
+                        <div class="flex items-center">
+                            <div onclick="selectUnit('km')" class="stair-step stair-shadow cursor-pointer bg-red-500 text-white rounded-lg p-2.5 font-bold flex justify-between items-center w-full border-b-4 border-red-700">
+                                <div class="flex items-center gap-2">
+                                    <span class="bg-white/20 px-2 py-0.5 rounded text-xs">1</span>
+                                    <span class="text-sm md:text-base">KM (Kilometer)</span>
+                                </div>
+                                <span class="text-[10px] md:text-xs bg-white text-red-600 px-2.5 py-0.5 rounded-full font-bold shadow-sm">Paling Panjang</span>
+                            </div>
+                        </div>
+
+                        <!-- Step 2: HM -->
+                        <div class="flex items-center pl-6">
+                            <div onclick="selectUnit('hm')" class="stair-step stair-shadow cursor-pointer bg-orange-500 text-white rounded-lg p-2.5 font-bold flex justify-between items-center w-full border-b-4 border-orange-700">
+                                <div class="flex items-center gap-2">
+                                    <span class="bg-white/20 px-2 py-0.5 rounded text-xs">2</span>
+                                    <span class="text-sm md:text-base">HM (Hektometer)</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Step 3: DAM -->
+                        <div class="flex items-center pl-12">
+                            <div onclick="selectUnit('dam')" class="stair-step stair-shadow cursor-pointer bg-amber-500 text-white rounded-lg p-2.5 font-bold flex justify-between items-center w-full border-b-4 border-amber-700">
+                                <div class="flex items-center gap-2">
+                                    <span class="bg-white/20 px-2 py-0.5 rounded text-xs">3</span>
+                                    <span class="text-sm md:text-base">DAM (Dekameter)</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Step 4: M -->
+                        <div class="flex items-center pl-18 md:pl-20">
+                            <div onclick="selectUnit('m')" class="stair-step stair-shadow cursor-pointer bg-emerald-500 text-white rounded-lg p-2.5 font-bold flex justify-between items-center w-full border-b-4 border-emerald-700">
+                                <div class="flex items-center gap-2">
+                                    <span class="bg-white/20 px-2 py-0.5 rounded text-xs">4</span>
+                                    <span class="text-sm md:text-base">M (Meter)</span>
+                                </div>
+                                <span class="text-[10px] md:text-xs bg-white text-emerald-800 px-2.5 py-0.5 rounded-full font-bold shadow-sm">Satuan Utama</span>
+                            </div>
+                        </div>
+
+                        <!-- Step 5: DM -->
+                        <div class="flex items-center pl-24 md:pl-28">
+                            <div onclick="selectUnit('dm')" class="stair-step stair-shadow cursor-pointer bg-teal-500 text-white rounded-lg p-2.5 font-bold flex justify-between items-center w-full border-b-4 border-teal-700">
+                                <div class="flex items-center gap-2">
+                                    <span class="bg-white/20 px-2 py-0.5 rounded text-xs">5</span>
+                                    <span class="text-sm md:text-base">DM (Desimeter)</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Step 6: CM -->
+                        <div class="flex items-center pl-32 md:pl-36">
+                            <div onclick="selectUnit('cm')" class="stair-step stair-shadow cursor-pointer bg-blue-500 text-white rounded-lg p-2.5 font-bold flex justify-between items-center w-full border-b-4 border-blue-700">
+                                <div class="flex items-center gap-2">
+                                    <span class="bg-white/20 px-2 py-0.5 rounded text-xs">6</span>
+                                    <span class="text-sm md:text-base">CM (Sentimeter)</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Step 7: MM -->
+                        <div class="flex items-center pl-40 md:pl-44">
+                            <div onclick="selectUnit('mm')" class="stair-step stair-shadow cursor-pointer bg-purple-500 text-white rounded-lg p-2.5 font-bold flex justify-between items-center w-full border-b-4 border-purple-700">
+                                <div class="flex items-center gap-2">
+                                    <span class="bg-white/20 px-2 py-0.5 rounded text-xs">7</span>
+                                    <span class="text-sm md:text-base">MM (Milimeter)</span>
+                                </div>
+                                <span class="text-[10px] md:text-xs bg-white text-purple-800 px-2.5 py-0.5 rounded-full font-bold shadow-sm">Paling Pendek</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Kanan: Penjelasan Detail Satuan -->
+                    <div class="w-full lg:w-2/5 bg-white p-5 rounded-2xl border-2 border-teal-200 shadow-sm space-y-4">
+                        <div class="flex items-center gap-2 border-b pb-2">
+                            <i class="fa-solid fa-circle-info text-teal-600 text-lg"></i>
+                            <h4 id="unit-title" class="font-bold text-teal-900 text-base md:text-lg">Klik anak tangga di samping!</h4>
+                        </div>
+                        <div id="unit-desc" class="text-xs text-slate-600 leading-relaxed space-y-2">
+                            <p>• Setiap <strong>TURUN 1 TANGGA</strong> = <strong>DIKALI 10</strong> (Tambah 1 angka nol).</p>
+                            <p>• Setiap <strong>NAIK 1 TANGGA</strong> = <strong>DIBAGI 10</strong> (Coret 1 angka nol).</p>
+                        </div>
+                        
+                        <div class="bg-amber-50 p-3.5 rounded-xl border border-amber-200 text-xs text-amber-900 space-y-1.5 shadow-sm">
+                            <p class="font-bold flex items-center gap-1">
+                                <i class="fa-solid fa-star text-amber-500"></i> Kunci Konversi Tangga Lengkap:
+                            </p>
+                            <p>• <strong>1 km = 10 hm = 100 dam = 1.000 m</strong></p>
+                            <p>• <strong>1 m = 10 dm = 100 cm = 1.000 mm</strong></p>
+                            <p>• <strong>1 cm = 10 mm</strong></p>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- Trik Matematika Cerita -->
+            <div class="bg-slate-50 p-4 rounded-xl border border-slate-200">
+                <h4 class="font-bold text-slate-800 text-sm mb-2 flex items-center gap-2">
+                    <i class="fa-solid fa-lightbulb text-amber-500"></i> Tips Penting Menyelesaikan Soal Cerita:
+                </h4>
+                <ol class="list-decimal list-inside text-xs text-slate-600 space-y-1">
+                    <li><strong>Samakan dulu semua satuannya</strong> sesuai target satuan yang ditanyakan di akhir soal.</li>
+                    <li>Hitung jumlah/selisihnya setelah semua satuan sama!</li>
+                </ol>
+            </div>
+        </section>
+
+        <!-- SEKSI 5: LATIHAN SOAL CERITA TERBIMBING (5 SOAL LENGKAP) -->
+        <section class="bg-white rounded-2xl p-6 shadow-sm border-2 border-purple-100">
+            <div class="flex items-center justify-between mb-4">
+                <div class="flex items-center gap-3">
+                    <div class="bg-purple-600 p-3 rounded-xl text-white">
+                        <i class="fa-solid fa-pen-to-square text-2xl"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-bold text-slate-800">5. Latihan Soal Terbimbing (5 Soal Cerita)</h3>
+                        <p class="text-xs text-slate-500">Isi langkah-langkah bimbingan untuk menyelesaikan soal!</p>
+                    </div>
+                </div>
+                <button onclick="resetPractice()" class="text-xs bg-slate-100 hover:bg-slate-200 text-slate-600 font-semibold px-3 py-1.5 rounded-lg border border-slate-300 transition">
+                    <i class="fa-solid fa-rotate-right mr-1"></i> Ulangi Semua
+                </button>
+            </div>
+
+            <div class="space-y-8">
+                <!-- Soal Cerita Terbimbing 1 -->
+                <div class="bg-purple-50/40 p-5 rounded-2xl border border-purple-100 space-y-4">
+                    <div class="flex items-start gap-3">
+                        <span class="bg-purple-600 text-white text-xs font-bold px-2 py-1 rounded">Soal 1</span>
+                        <p class="text-sm font-semibold text-slate-800 leading-relaxed">
+                            Paman memasang tali jemuran sepanjang <strong>2 dekameter (dam)</strong>. Karena kurang panjang, Paman menyambungnya dengan tali sepanjang <strong>30 desimeter (dm)</strong>. Berapa <strong>meter (m)</strong> total panjang tali jemuran Paman?
+                        </p>
+                    </div>
+
+                    <!-- Langkah Bimbingan -->
+                    <div class="bg-white p-4 rounded-xl border border-purple-200 space-y-3 text-xs">
+                        <p class="font-bold text-purple-900 border-b pb-1">💡 Langkah Bimbingan:</p>
+                        
+                        <div class="space-y-2">
+                            <p><strong>Langkah 1:</strong> Ubah tali pertama (2 dam) ke meter (m). (Turun 1 tangga = dikali 10)</p>
+                            <div class="flex items-center gap-2">
+                                <span>2 dam =</span>
+                                <input type="number" id="s1-step1" placeholder="..." class="w-20 p-1 border rounded text-center focus:ring-2 focus:ring-purple-400 outline-none">
+                                <span>m</span>
+                            </div>
+                        </div>
+
+                        <div class="space-y-2">
+                            <p><strong>Langkah 2:</strong> Ubah tali kedua (30 dm) ke meter (m). (Naik 1 tangga = dibagi 10)</p>
+                            <div class="flex items-center gap-2">
+                                <span>30 dm =</span>
+                                <input type="number" id="s1-step2" placeholder="..." class="w-20 p-1 border rounded text-center focus:ring-2 focus:ring-purple-400 outline-none">
+                                <span>m</span>
+                            </div>
+                        </div>
+
+                        <div class="space-y-2">
+                            <p><strong>Langkah 3:</strong> Jumlahkan kedua tali yang sudah ber-satuan meter.</p>
+                            <div class="flex items-center gap-2 flex-wrap">
+                                <span>Total = </span>
+                                <input type="number" id="s1-step3a" placeholder="..." class="w-20 p-1 border rounded text-center focus:ring-2 focus:ring-purple-400 outline-none">
+                                <span>m + </span>
+                                <input type="number" id="s1-step3b" placeholder="..." class="w-20 p-1 border rounded text-center focus:ring-2 focus:ring-purple-400 outline-none">
+                                <span>m = </span>
+                                <input type="number" id="s1-step3c" placeholder="..." class="w-24 p-1 border rounded text-center focus:ring-2 focus:ring-purple-400 outline-none">
+                                <span>m</span>
+                            </div>
+                        </div>
+
+                        <button onclick="checkGuided1()" class="bg-purple-600 hover:bg-purple-700 text-white font-bold px-4 py-2 rounded-lg transition shadow-sm mt-2">
+                            Cek Jawaban Soal 1
+                        </button>
+                        <div id="s1-feedback" class="hidden p-2 rounded text-xs font-bold mt-2"></div>
+                    </div>
+                </div>
+
+                <!-- Soal Cerita Terbimbing 2 -->
+                <div class="bg-purple-50/40 p-5 rounded-2xl border border-purple-100 space-y-4">
+                    <div class="flex items-start gap-3">
+                        <span class="bg-purple-600 text-white text-xs font-bold px-2 py-1 rounded">Soal 2</span>
+                        <p class="text-sm font-semibold text-slate-800 leading-relaxed">
+                            Kiki menggambar garis sepanjang <strong>4 sentimeter (cm)</strong>. Lalu Dito menyambungnya lagi sepanjang <strong>20 milimeter (mm)</strong>. Berapa <strong>milimeter (mm)</strong> total panjang garis tersebut?
+                        </p>
+                    </div>
+
+                    <!-- Langkah Bimbingan -->
+                    <div class="bg-white p-4 rounded-xl border border-purple-200 space-y-3 text-xs">
+                        <p class="font-bold text-purple-900 border-b pb-1">💡 Langkah Bimbingan:</p>
+                        
+                        <div class="space-y-2">
+                            <p><strong>Langkah 1:</strong> Ubah garis Kiki (4 cm) menjadi milimeter (mm). (Turun 1 tangga = dikali 10)</p>
+                            <div class="flex items-center gap-2">
+                                <span>4 cm =</span>
+                                <input type="number" id="s2-step1" placeholder="..." class="w-24 p-1 border rounded text-center focus:ring-2 focus:ring-purple-400 outline-none">
+                                <span>mm</span>
+                            </div>
+                        </div>
+
+                        <div class="space-y-2">
+                            <p><strong>Langkah 2:</strong> Jumlahkan kedua garis dalam satuan mm.</p>
+                            <div class="flex items-center gap-2 flex-wrap">
+                                <span>Total Garis = </span>
+                                <input type="number" id="s2-step2a" placeholder="..." class="w-24 p-1 border rounded text-center focus:ring-2 focus:ring-purple-400 outline-none">
+                                <span>mm + 20 mm = </span>
+                                <input type="number" id="s2-step2b" placeholder="..." class="w-24 p-1 border rounded text-center focus:ring-2 focus:ring-purple-400 outline-none">
+                                <span>mm</span>
+                            </div>
+                        </div>
+
+                        <button onclick="checkGuided2()" class="bg-purple-600 hover:bg-purple-700 text-white font-bold px-4 py-2 rounded-lg transition shadow-sm mt-2">
+                            Cek Jawaban Soal 2
+                        </button>
+                        <div id="s2-feedback" class="hidden p-2 rounded text-xs font-bold mt-2"></div>
+                    </div>
+                </div>
+
+                <!-- Soal Cerita Terbimbing 3 (BARU: KM -> M) -->
+                <div class="bg-purple-50/40 p-5 rounded-2xl border border-purple-100 space-y-4">
+                    <div class="flex items-start gap-3">
+                        <span class="bg-purple-600 text-white text-xs font-bold px-2 py-1 rounded">Soal 3</span>
+                        <p class="text-sm font-semibold text-slate-800 leading-relaxed">
+                            Ayah naik sepeda motor sejauh <strong>3 kilometer (km)</strong> dari rumah ke pasar, lalu melanjutkan perjalanan sejauh <strong>500 meter (m)</strong> ke toko buku. Berapa <strong>meter (m)</strong> total jarak perjalanan Ayah?
+                        </p>
+                    </div>
+
+                    <!-- Langkah Bimbingan -->
+                    <div class="bg-white p-4 rounded-xl border border-purple-200 space-y-3 text-xs">
+                        <p class="font-bold text-purple-900 border-b pb-1">💡 Langkah Bimbingan:</p>
+                        
+                        <div class="space-y-2">
+                            <p><strong>Langkah 1:</strong> Ubah jarak pertama (3 km) ke meter (m). (Turun 3 tangga = dikali 1.000)</p>
+                            <div class="flex items-center gap-2">
+                                <span>3 km =</span>
+                                <input type="number" id="s3-step1" placeholder="..." class="w-28 p-1 border rounded text-center focus:ring-2 focus:ring-purple-400 outline-none">
+                                <span>m</span>
+                            </div>
+                        </div>
+
+                        <div class="space-y-2">
+                            <p><strong>Langkah 2:</strong> Hitung total jarak dengan menambahkan 500 m.</p>
+                            <div class="flex items-center gap-2 flex-wrap">
+                                <span>Total = </span>
+                                <input type="number" id="s3-step2a" placeholder="..." class="w-28 p-1 border rounded text-center focus:ring-2 focus:ring-purple-400 outline-none">
+                                <span>m + 500 m = </span>
+                                <input type="number" id="s3-step2b" placeholder="..." class="w-28 p-1 border rounded text-center focus:ring-2 focus:ring-purple-400 outline-none">
+                                <span>m</span>
+                            </div>
+                        </div>
+
+                        <button onclick="checkGuided3()" class="bg-purple-600 hover:bg-purple-700 text-white font-bold px-4 py-2 rounded-lg transition shadow-sm mt-2">
+                            Cek Jawaban Soal 3
+                        </button>
+                        <div id="s3-feedback" class="hidden p-2 rounded text-xs font-bold mt-2"></div>
+                    </div>
+                </div>
+
+                <!-- Soal Cerita Terbimbing 4 (BARU: HM & DAM -> M) -->
+                <div class="bg-purple-50/40 p-5 rounded-2xl border border-purple-100 space-y-4">
+                    <div class="flex items-start gap-3">
+                        <span class="bg-purple-600 text-white text-xs font-bold px-2 py-1 rounded">Soal 4</span>
+                        <p class="text-sm font-semibold text-slate-800 leading-relaxed">
+                            Kakek memiliki kebun kelapa sepanjang <strong>4 hektometer (hm)</strong> dan kebun jagung sepanjang <strong>6 dekameter (dam)</strong>. Berapa <strong>meter (m)</strong> total panjang kedua kebun Kakek?
+                        </p>
+                    </div>
+
+                    <!-- Langkah Bimbingan -->
+                    <div class="bg-white p-4 rounded-xl border border-purple-200 space-y-3 text-xs">
+                        <p class="font-bold text-purple-900 border-b pb-1">💡 Langkah Bimbingan:</p>
+                        
+                        <div class="space-y-2">
+                            <p><strong>Langkah 1:</strong> Ubah kebun kelapa (4 hm) ke meter (m). (Turun 2 tangga = dikali 100)</p>
+                            <div class="flex items-center gap-2">
+                                <span>4 hm =</span>
+                                <input type="number" id="s4-step1" placeholder="..." class="w-24 p-1 border rounded text-center focus:ring-2 focus:ring-purple-400 outline-none">
+                                <span>m</span>
+                            </div>
+                        </div>
+
+                        <div class="space-y-2">
+                            <p><strong>Langkah 2:</strong> Ubah kebun jagung (6 dam) ke meter (m). (Turun 1 tangga = dikali 10)</p>
+                            <div class="flex items-center gap-2">
+                                <span>6 dam =</span>
+                                <input type="number" id="s4-step2" placeholder="..." class="w-24 p-1 border rounded text-center focus:ring-2 focus:ring-purple-400 outline-none">
+                                <span>m</span>
+                            </div>
+                        </div>
+
+                        <div class="space-y-2">
+                            <p><strong>Langkah 3:</strong> Jumlahkan kedua kebun dalam meter.</p>
+                            <div class="flex items-center gap-2 flex-wrap">
+                                <span>Total = </span>
+                                <input type="number" id="s4-step3a" placeholder="..." class="w-20 p-1 border rounded text-center focus:ring-2 focus:ring-purple-400 outline-none">
+                                <span>m + </span>
+                                <input type="number" id="s4-step3b" placeholder="..." class="w-20 p-1 border rounded text-center focus:ring-2 focus:ring-purple-400 outline-none">
+                                <span>m = </span>
+                                <input type="number" id="s4-step3c" placeholder="..." class="w-24 p-1 border rounded text-center focus:ring-2 focus:ring-purple-400 outline-none">
+                                <span>m</span>
+                            </div>
+                        </div>
+
+                        <button onclick="checkGuided4()" class="bg-purple-600 hover:bg-purple-700 text-white font-bold px-4 py-2 rounded-lg transition shadow-sm mt-2">
+                            Cek Jawaban Soal 4
+                        </button>
+                        <div id="s4-feedback" class="hidden p-2 rounded text-xs font-bold mt-2"></div>
+                    </div>
+                </div>
+
+                <!-- Soal Cerita Terbimbing 5 (BARU: PENGURANGAN RIBBON M, DM -> CM) -->
+                <div class="bg-purple-50/40 p-5 rounded-2xl border border-purple-100 space-y-4">
+                    <div class="flex items-start gap-3">
+                        <span class="bg-purple-600 text-white text-xs font-bold px-2 py-1 rounded">Soal 5</span>
+                        <p class="text-sm font-semibold text-slate-800 leading-relaxed">
+                            Ibu memiliki pita sepanjang <strong>1 meter (m)</strong>. Ibu memotong pita tersebut sepanjang <strong>40 sentimeter (cm)</strong> untuk menghias kado. Berapa <strong>sentimeter (cm)</strong> sisa pita Ibu?
+                        </p>
+                    </div>
+
+                    <!-- Langkah Bimbingan -->
+                    <div class="bg-white p-4 rounded-xl border border-purple-200 space-y-3 text-xs">
+                        <p class="font-bold text-purple-900 border-b pb-1">💡 Langkah Bimbingan:</p>
+                        
+                        <div class="space-y-2">
+                            <p><strong>Langkah 1:</strong> Ubah panjang pita awal (1 m) ke sentimeter (cm). (Turun 2 tangga = dikali 100)</p>
+                            <div class="flex items-center gap-2">
+                                <span>1 m =</span>
+                                <input type="number" id="s5-step1" placeholder="..." class="w-24 p-1 border rounded text-center focus:ring-2 focus:ring-purple-400 outline-none">
+                                <span>cm</span>
+                            </div>
+                        </div>
+
+                        <div class="space-y-2">
+                            <p><strong>Langkah 2:</strong> Kurangi pita awal dengan pita yang dipotong (40 cm).</p>
+                            <div class="flex items-center gap-2 flex-wrap">
+                                <span>Sisa Pita = </span>
+                                <input type="number" id="s5-step2a" placeholder="..." class="w-20 p-1 border rounded text-center focus:ring-2 focus:ring-purple-400 outline-none">
+                                <span>cm - 40 cm = </span>
+                                <input type="number" id="s5-step2b" placeholder="..." class="w-24 p-1 border rounded text-center focus:ring-2 focus:ring-purple-400 outline-none">
+                                <span>cm</span>
+                            </div>
+                        </div>
+
+                        <button onclick="checkGuided5()" class="bg-purple-600 hover:bg-purple-700 text-white font-bold px-4 py-2 rounded-lg transition shadow-sm mt-2">
+                            Cek Jawaban Soal 5
+                        </button>
+                        <div id="s5-feedback" class="hidden p-2 rounded text-xs font-bold mt-2"></div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- SEKSI EVALUASI AKHIR / RANGKUMAN -->
+        <div id="completion-box" class="hidden bg-emerald-500 text-white p-6 rounded-2xl text-center shadow-lg bounce-slow">
+            <i class="fa-solid fa-trophy text-5xl mb-2 text-amber-300"></i>
+            <h3 class="text-2xl font-bold">Luar Biasa! Kamu Hebat! 🎉</h3>
+            <p class="text-sm mt-1 text-emerald-100">Kamu telah menguasai seluruh 5 soal cerita dan konversi satuan panjang dari KM sampai MM!</p>
+        </div>
+
+    </main>
+
+    <!-- KODE JAVASCRIPT LOGIKA INTERAKTIF -->
+    <script>
+        // --- LOGIKA WARM UP ---
+        let warmupScore = 0;
+        const warmupAnswered = { 1: false, 2: false, 3: false, 4: false };
+
+        function checkWarmup(qNum, value, isCorrect, btn) {
+            const feedbackEl = document.getElementById(`wu-fb-${qNum}`);
+            const buttons = document.querySelectorAll(`.wu-opt-${qNum}`);
+            
+            buttons.forEach(b => {
+                b.disabled = true;
+                b.classList.add('opacity-50', 'cursor-not-allowed');
+            });
+
+            feedbackEl.classList.remove('hidden');
+
+            if (isCorrect) {
+                btn.classList.remove('bg-white', 'hover:bg-amber-50');
+                btn.classList.add('bg-emerald-500', 'text-white', 'border-emerald-600');
+                feedbackEl.textContent = "✨ Benar sekali! Jawaban kamu tepat!";
+                feedbackEl.classList.add('text-emerald-600');
+                if (!warmupAnswered[qNum]) {
+                    warmupScore++;
+                    warmupAnswered[qNum] = true;
+                }
+            } else {
+                btn.classList.remove('bg-white', 'hover:bg-amber-50');
+                btn.classList.add('bg-rose-500', 'text-white', 'border-rose-600');
+                feedbackEl.textContent = "❌ Masih kurang tepat, gunakan tangga konversi untuk membantumu!";
+                feedbackEl.classList.add('text-rose-600');
+            }
+
+            document.getElementById('warmup-score').textContent = `Skor: ${warmupScore} / 4`;
+            checkTotalCompletion();
+        }
+
+        // --- LOGIKA TANGGA INTERAKTIF ---
+        const unitData = {
+            km: { name: "Kilometer (KM)", desc: "Satuan paling panjang! Digunakan untuk mengukur jarak antarkota atau jalan tol.<br><b>1 KM = 10 HM = 100 DAM = 1.000 M</b>" },
+            hm: { name: "Hektometer (HM)", desc: "Digunakan mengukur luas atau panjang kebun/wilayah.<br><b>1 HM = 10 DAM = 100 M</b>" },
+            dam: { name: "Dekameter (DAM)", desc: "Digunakan mengukur panjang lapangan bola atau jalan komplek.<br><b>1 DAM = 10 M</b>" },
+            m: { name: "Meter (M)", desc: "Satuan utama panjang! Digunakan mengukur tinggi rumah atau panjang papan tulis.<br><b>1 M = 10 DM = 100 CM = 1.000 MM</b>" },
+            dm: { name: "Desimeter (DM)", desc: "Digunakan untuk ukuran sedang seperti panjang meja atau pita.<br><b>1 DM = 10 CM</b>" },
+            cm: { name: "Sentimeter (CM)", desc: "Digunakan mengukur penggaris, buku tulis, pensil, dan penghapus.<br><b>1 CM = 10 MM</b>" },
+            mm: { name: "Milimeter (MM)", desc: "Satuan paling pendek! Digunakan mengukur ketebalan koin, serangga, atau jarum.<br><b>1 CM = 10 MM</b>" }
+        };
+
+        function selectUnit(unitKey) {
+            const data = unitData[unitKey];
+            document.getElementById('unit-title').innerHTML = `📍 Anak Tangga: ${data.name}`;
+            document.getElementById('unit-desc').innerHTML = data.desc;
+        }
+
+        // --- LOGIKA LATIHAN TERBIMBING (5 SOAL) ---
+        let guidedPassed = { 1: false, 2: false, 3: false, 4: false, 5: false };
+
+        function checkGuided1() {
+            const s1 = parseInt(document.getElementById('s1-step1').value);
+            const s2 = parseInt(document.getElementById('s1-step2').value);
+            const s3a = parseInt(document.getElementById('s1-step3a').value);
+            const s3b = parseInt(document.getElementById('s1-step3b').value);
+            const s3c = parseInt(document.getElementById('s1-step3c').value);
+            const fb = document.getElementById('s1-feedback');
+
+            fb.classList.remove('hidden', 'bg-emerald-100', 'text-emerald-800', 'bg-rose-100', 'text-rose-800');
+
+            if (s1 === 20 && s2 === 3 && s3a === 20 && s3b === 3 && s3c === 23) {
+                fb.classList.add('bg-emerald-100', 'text-emerald-800');
+                fb.innerHTML = "🎉 Jawaban Soal 1 BENAR! (2 dam = 20 m, 30 dm = 3 m, lalu 20 + 3 = 23 m). Hebat!";
+                guidedPassed[1] = true;
+            } else {
+                fb.classList.add('bg-rose-100', 'text-rose-800');
+                fb.innerHTML = "⚠️ Ada langkah yang belum tepat. Periksa lagi:<br>• 2 dam = 20 m<br>• 30 dm = 3 m<br>• Total = 20 + 3 = 23 m";
+                guidedPassed[1] = false;
+            }
+            checkTotalCompletion();
+        }
+
+        function checkGuided2() {
+            const s1 = parseInt(document.getElementById('s2-step1').value);
+            const s2a = parseInt(document.getElementById('s2-step2a').value);
+            const s2b = parseInt(document.getElementById('s2-step2b').value);
+            const fb = document.getElementById('s2-feedback');
+
+            fb.classList.remove('hidden', 'bg-emerald-100', 'text-emerald-800', 'bg-rose-100', 'text-rose-800');
+
+            if (s1 === 40 && s2a === 40 && s2b === 60) {
+                fb.classList.add('bg-emerald-100', 'text-emerald-800');
+                fb.innerHTML = "🎉 Jawaban Soal 2 BENAR! (4 cm = 40 mm, lalu 40 + 20 = 60 mm). Keren!";
+                guidedPassed[2] = true;
+            } else {
+                fb.classList.add('bg-rose-100', 'text-rose-800');
+                fb.innerHTML = "⚠️ Periksa kalkulasimu:<br>• 4 cm = 40 mm<br>• Total = 40 + 20 = 60 mm";
+                guidedPassed[2] = false;
+            }
+            checkTotalCompletion();
+        }
+
+        function checkGuided3() {
+            const s1 = parseInt(document.getElementById('s3-step1').value);
+            const s2a = parseInt(document.getElementById('s3-step2a').value);
+            const s2b = parseInt(document.getElementById('s3-step2b').value);
+            const fb = document.getElementById('s3-feedback');
+
+            fb.classList.remove('hidden', 'bg-emerald-100', 'text-emerald-800', 'bg-rose-100', 'text-rose-800');
+
+            if (s1 === 3000 && s2a === 3000 && s2b === 3500) {
+                fb.classList.add('bg-emerald-100', 'text-emerald-800');
+                fb.innerHTML = "🎉 Jawaban Soal 3 BENAR! (3 km = 3.000 m, lalu 3.000 + 500 = 3.500 m). Mantap!";
+                guidedPassed[3] = true;
+            } else {
+                fb.classList.add('bg-rose-100', 'text-rose-800');
+                fb.innerHTML = "⚠️ Coba cek kembali:<br>• 3 km = 3.000 m (turun 3 tangga)<br>• Total = 3.000 + 500 = 3.500 m";
+                guidedPassed[3] = false;
+            }
+            checkTotalCompletion();
+        }
+
+        function checkGuided4() {
+            const s1 = parseInt(document.getElementById('s4-step1').value);
+            const s2 = parseInt(document.getElementById('s4-step2').value);
+            const s3a = parseInt(document.getElementById('s4-step3a').value);
+            const s3b = parseInt(document.getElementById('s4-step3b').value);
+            const s3c = parseInt(document.getElementById('s4-step3c').value);
+            const fb = document.getElementById('s4-feedback');
+
+            fb.classList.remove('hidden', 'bg-emerald-100', 'text-emerald-800', 'bg-rose-100', 'text-rose-800');
+
+            if (s1 === 400 && s2 === 60 && s3a === 400 && s3b === 60 && s3c === 460) {
+                fb.classList.add('bg-emerald-100', 'text-emerald-800');
+                fb.innerHTML = "🎉 Jawaban Soal 4 BENAR! (4 hm = 400 m, 6 dam = 60 m, total 400 + 60 = 460 m). Pintar!";
+                guidedPassed[4] = true;
+            } else {
+                fb.classList.add('bg-rose-100', 'text-rose-800');
+                fb.innerHTML = "⚠️ Periksa kalkulasimu:<br>• 4 hm = 400 m<br>• 6 dam = 60 m<br>• Total = 400 + 60 = 460 m";
+                guidedPassed[4] = false;
+            }
+            checkTotalCompletion();
+        }
+
+        function checkGuided5() {
+            const s1 = parseInt(document.getElementById('s5-step1').value);
+            const s2a = parseInt(document.getElementById('s5-step2a').value);
+            const s2b = parseInt(document.getElementById('s5-step2b').value);
+            const fb = document.getElementById('s5-feedback');
+
+            fb.classList.remove('hidden', 'bg-emerald-100', 'text-emerald-800', 'bg-rose-100', 'text-rose-800');
+
+            if (s1 === 100 && s2a === 100 && s2b === 60) {
+                fb.classList.add('bg-emerald-100', 'text-emerald-800');
+                fb.innerHTML = "🎉 Jawaban Soal 5 BENAR! (1 m = 100 cm, sisa = 100 - 40 = 60 cm). Luar biasa!";
+                guidedPassed[5] = true;
+            } else {
+                fb.classList.add('bg-rose-100', 'text-rose-800');
+                fb.innerHTML = "⚠️ Coba hitung lagi:<br>• 1 m = 100 cm<br>• Sisa pita = 100 cm - 40 cm = 60 cm";
+                guidedPassed[5] = false;
+            }
+            checkTotalCompletion();
+        }
+
+        function resetPractice() {
+            for (let i = 1; i <= 5; i++) {
+                guidedPassed[i] = false;
+            }
+            
+            document.querySelectorAll("input[type='number']").forEach(input => input.value = '');
+            document.querySelectorAll("[id$='-feedback']").forEach(fb => fb.classList.add('hidden'));
+            
+            document.getElementById('completion-box').classList.add('hidden');
+        }
+
+        function checkTotalCompletion() {
+            const allPassed = Object.values(guidedPassed).every(val => val === true);
+            if (allPassed) {
+                document.getElementById('completion-box').classList.remove('hidden');
+            }
+        }
+    </script>
+
+</body>
+</html>
